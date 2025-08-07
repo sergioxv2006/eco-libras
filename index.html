@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Libras Audiovisual - Aprenda com Acessibilidade</title>
+    <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+    <!-- Botão para pular para o conteúdo principal -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- Barra de ferramentas de acessibilidade -->
+    <div class="accessibility-toolbar" role="toolbar" aria-label="Ferramentas de acessibilidade">
+        <button onclick="adjustFontSize('increase')" aria-label="Aumentar tamanho da fonte">A+</button>
+        <button onclick="adjustFontSize('decrease')" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button onclick="adjustFontSize('reset')" aria-label="Resetar tamanho da fonte">A</button>
+        <button onclick="toggleHighContrast()" aria-label="Alternar alto contraste">Contraste</button>
+        <button onclick="toggleScreenReader()" aria-label="Ativar/desativar leitor de tela">🔊</button>
+    </div>
+
+    <header role="banner">
+        <nav role="navigation" aria-label="Menu principal">
+            <div class="logo">
+                <img src="images/Imagem do WhatsApp de 2025-08-06 à(s) 11.10.16_6deb6ab8.jpg" alt="Ícone de acessibilidade" class="logo-icon">
+                Curso de Libras
+            </div>
+            <ul>
+                <li><a href="#home" aria-label="Ir para início">Início</a></li>
+                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li><a href="#courses" aria-label="Ir para cursos">Cursos</a></li>
+                <li><a href="#contact" aria-label="Ir para contato">Contato</a></li>
+                <li><a href="accessibility.html" aria-label="Ir para página de acessibilidade">Acessibilidade</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main" id="main-content">
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Aprenda Libras de Forma Acessível e Audiovisual</h1>
+                <p>Nosso curso oferece uma experiência completa para você dominar a Língua Brasileira de Sinais com recursos audiovisuais e total acessibilidade.</p>
+                <a href="#courses" class="btn" aria-label="Ver nossos cursos disponíveis">Ver Cursos</a>
+            </div>
+            <div class="hero-image">
+                <img src="images/sign_language_icon1.jpg" alt="Ilustração de pessoa usando linguagem de sinais" class="hero-img">
+            </div>
+        </section>
+
+        <section id="about" class="about-us">
+            <h2>Sobre Nós</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Somos uma plataforma dedicada a tornar o aprendizado de Libras acessível a todos, com foco em conteúdo audiovisual e recursos de acessibilidade completos.</p>
+                    <p>Nossa missão é quebrar barreiras de comunicação e promover a inclusão através do ensino de qualidade da Língua Brasileira de Sinais.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature">
+                        <img src="images/accessibility_icon2.jpg" alt="Ícone de acessibilidade" class="feature-icon">
+                        <h3>100% Acessível</h3>
+                        <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="images/accessibility_icon3.jpg" alt="Ícone de recursos audiovisuais" class="feature-icon">
+                        <h3>Audiovisual</h3>
+                        <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="courses">
+            <h2>Nossos Cursos</h2>
+            <div class="course-list">
+                <article class="course-item">
+                    <img src="images/sign_language_icon2.jpg" alt="Ícone do curso básico de Libras" class="course-icon">
+                    <h3>Libras Básico</h3>
+                    <p>Comece sua jornada na Libras com os fundamentos essenciais. Aprenda o alfabeto, números e sinais básicos do dia a dia.</p>
+                    <ul class="course-features">
+                        <li>40 horas de conteúdo</li>
+                        <li>Vídeos com legendas</li>
+                        <li>Exercícios práticos</li>
+                    </ul>
+                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso básico">Saiba Mais</a>
+                </article>
+                <article class="course-item">
+                    <img src="images/sign_language_icon1.jpg" alt="Ícone do curso intermediário de Libras" class="course-icon">
+                    <h3>Libras Intermediário</h3>
+                    <p>Aprofunde seus conhecimentos e pratique a conversação. Desenvolva fluência em contextos do cotidiano.</p>
+                    <ul class="course-features">
+                        <li>60 horas de conteúdo</li>
+                        <li>Conversação prática</li>
+                        <li>Gramática da Libras</li>
+                    </ul>
+                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso intermediário">Saiba Mais</a>
+                </article>
+                <article class="course-item">
+                    <img src="images/accessibility_icon1.jpg" alt="Ícone do curso avançado de Libras" class="course-icon">
+                    <h3>Libras Avançado</h3>
+                    <p>Domine a Libras e explore tópicos complexos. Prepare-se para ser um comunicador fluente.</p>
+                    <ul class="course-features">
+                        <li>80 horas de conteúdo</li>
+                        <li>Temas especializados</li>
+                        <li>Certificação oficial</li>
+                    </ul>
+                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso avançado">Saiba Mais</a>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Entre em Contato</h2>
+            <p>Tem dúvidas? Entre em contato conosco!</p>
+            <form role="form" aria-label="Formulário de contato">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" placeholder="Seu Nome" required aria-required="true" aria-describedby="name-help">
+                    <small id="name-help">Digite seu nome completo</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Seu Email" required aria-required="true" aria-describedby="email-help">
+                    <small id="email-help">Digite um endereço de email válido</small>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensagem:</label>
+                    <textarea id="message" name="message" placeholder="Sua Mensagem" required aria-required="true" aria-describedby="message-help"></textarea>
+                    <small id="message-help">Descreva sua dúvida ou comentário</small>
+                </div>
+                <button type="submit" class="btn" aria-label="Enviar mensagem">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+            <p><a href="accessibility.html" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/accessibility.js"></script>
+</body>
+</html>
+

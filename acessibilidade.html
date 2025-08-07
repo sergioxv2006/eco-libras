@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos de Acessibilidade - Curso de Libras Audiovisual</title>
+    <meta name="description" content="Conheça todos os recursos de acessibilidade disponíveis em nosso curso de Libras audiovisual.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+    <!-- Botão para pular para o conteúdo principal -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- Barra de ferramentas de acessibilidade -->
+    <div class="accessibility-toolbar" role="toolbar" aria-label="Ferramentas de acessibilidade">
+        <button onclick="adjustFontSize('increase')" aria-label="Aumentar tamanho da fonte">A+</button>
+        <button onclick="adjustFontSize('decrease')" aria-label="Diminuir tamanho da fonte">A-</button>
+        <button onclick="adjustFontSize('reset')" aria-label="Resetar tamanho da fonte">A</button>
+        <button onclick="toggleHighContrast()" aria-label="Alternar alto contraste">Contraste</button>
+        <button onclick="toggleScreenReader()" aria-label="Ativar/desativar leitor de tela">🔊</button>
+    </div>
+
+    <header role="banner">
+        <nav role="navigation" aria-label="Menu principal">
+            <div class="logo">
+                <img src="images/Imagem do WhatsApp de 2025-08-06 à(s) 11.10.16_6deb6ab8.jpg" alt="Ícone de acessibilidade" class="logo-icon">
+                Curso de Libras
+            </div>
+            <ul>
+                <li><a href="index.html" aria-label="Voltar para página inicial">Início</a></li>
+                <li><a href="index.html#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li><a href="index.html#courses" aria-label="Ir para cursos">Cursos</a></li>
+                <li><a href="index.html#contact" aria-label="Ir para contato">Contato</a></li>
+                <li><a href="accessibility.html" aria-current="page" aria-label="Página atual: Acessibilidade">Acessibilidade</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main role="main" id="main-content">
+        <section class="accessibility-hero">
+            <h1>Recursos de Acessibilidade</h1>
+            <p>Nosso compromisso é tornar o aprendizado de Libras acessível para todos. Conheça os recursos disponíveis em nossa plataforma.</p>
+        </section>
+
+        <section class="accessibility-features">
+            <h2>Recursos Disponíveis</h2>
+            
+            <div class="feature-grid">
+                <article class="accessibility-feature">
+                    <img src="images/accessibility_icon1.jpg" alt="Ícone de navegação por teclado" class="feature-icon">
+                    <h3>Navegação por Teclado</h3>
+                    <p>Todo o site pode ser navegado usando apenas o teclado. Use Tab para navegar entre elementos e Enter para ativar links e botões.</p>
+                    <ul>
+                        <li>Tab: Navegar para o próximo elemento</li>
+                        <li>Shift + Tab: Navegar para o elemento anterior</li>
+                        <li>Enter/Space: Ativar links e botões</li>
+                        <li>Esc: Voltar ao topo da página</li>
+                    </ul>
+                </article>
+
+                <article class="accessibility-feature">
+                    <img src="images/accessibility_icon2.jpg" alt="Ícone de leitor de tela" class="feature-icon">
+                    <h3>Compatibilidade com Leitores de Tela</h3>
+                    <p>Nosso site é totalmente compatível com leitores de tela como NVDA, JAWS e VoiceOver.</p>
+                    <ul>
+                        <li>Estrutura semântica HTML5</li>
+                        <li>Atributos ARIA apropriados</li>
+                        <li>Descrições alternativas para imagens</li>
+                        <li>Anúncios de mudanças de contexto</li>
+                    </ul>
+                </article>
+
+                <article class="accessibility-feature">
+                    <img src="images/accessibility_icon3.jpg" alt="Ícone de contraste" class="feature-icon">
+                    <h3>Alto Contraste e Fontes</h3>
+                    <p>Ajuste o contraste e o tamanho das fontes conforme sua necessidade visual.</p>
+                    <ul>
+                        <li>Modo de alto contraste</li>
+                        <li>Aumento/diminuição de fonte</li>
+                        <li>Cores com contraste adequado (WCAG AA)</li>
+                        <li>Fontes legíveis e escaláveis</li>
+                    </ul>
+                </article>
+
+                <article class="accessibility-feature">
+                    <img src="images/sign_language_icon1.jpg" alt="Ícone de Libras" class="feature-icon">
+                    <h3>Conteúdo em Libras</h3>
+                    <p>Todos os vídeos incluem interpretação em Libras e legendas descritivas.</p>
+                    <ul>
+                        <li>Vídeos com intérprete de Libras</li>
+                        <li>Legendas sincronizadas</li>
+                        <li>Transcrições completas</li>
+                        <li>Descrição de áudio para elementos visuais</li>
+                    </ul>
+                </article>
+
+                <article class="accessibility-feature">
+                    <img src="images/sign_language_icon2.jpg" alt="Ícone de formulários acessíveis" class="feature-icon">
+                    <h3>Formulários Acessíveis</h3>
+                    <p>Todos os formulários são projetados para máxima acessibilidade.</p>
+                    <ul>
+                        <li>Labels associados aos campos</li>
+                        <li>Mensagens de erro claras</li>
+                        <li>Instruções de preenchimento</li>
+                        <li>Validação em tempo real</li>
+                    </ul>
+                </article>
+
+                <article class="accessibility-feature">
+                    <img src="images/accessibility_icon1.jpg" alt="Ícone de responsividade" class="feature-icon">
+                    <h3>Design Responsivo</h3>
+                    <p>O site se adapta a diferentes dispositivos e orientações de tela.</p>
+                    <ul>
+                        <li>Layout flexível</li>
+                        <li>Suporte a zoom até 200%</li>
+                        <li>Compatível com dispositivos móveis</li>
+                        <li>Orientação portrait e landscape</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="accessibility-guidelines">
+            <h2>Diretrizes Seguidas</h2>
+            <div class="guidelines-content">
+                <div class="guideline-item">
+                    <h3>WCAG 2.1 Nível AA</h3>
+                    <p>Seguimos as Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.1 no nível AA, garantindo que nosso site seja acessível para a maioria das pessoas com deficiência.</p>
+                </div>
+                
+                <div class="guideline-item">
+                    <h3>Lei Brasileira de Inclusão</h3>
+                    <p>Nosso site está em conformidade com a Lei Brasileira de Inclusão da Pessoa com Deficiência (Lei nº 13.146/2015).</p>
+                </div>
+                
+                <div class="guideline-item">
+                    <h3>eMAG</h3>
+                    <p>Seguimos o Modelo de Acessibilidade em Governo Eletrônico (eMAG) para garantir a acessibilidade digital.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="accessibility-contact">
+            <h2>Precisa de Ajuda?</h2>
+            <p>Se você encontrar alguma barreira de acessibilidade em nosso site ou precisar de assistência adicional, entre em contato conosco:</p>
+            
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <h3>Email</h3>
+                    <p><a href="mailto:acessibilidade@cursodlibras.com.br">acessibilidade@cursodlibras.com.br</a></p>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>Telefone</h3>
+                    <p><a href="tel:+5511999999999">(11) 99999-9999</a></p>
+                </div>
+                
+                <div class="contact-method">
+                    <h3>WhatsApp</h3>
+                    <p><a href="https://wa.me/5511999999999">Conversar via WhatsApp</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/accessibility.js"></script>
+</body>
+</html>
+
