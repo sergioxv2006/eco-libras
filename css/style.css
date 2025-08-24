@@ -30,6 +30,7 @@ a {
 }
 
 ul {
+    
     list-style: none;
 }
 
@@ -40,43 +41,80 @@ img {
 
 /* Header */
 header {
-    background: var(--primary-color);
+    background: transparent;
     color: var(--secondary-color);
-    padding: 1rem 0;
+    padding: 0.04rem 0;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
-    box-shadow: var(--shadow);
+    box-shadow: none;
+    transition: background 0.3s;
+    /* Remova qualquer background-image ou url daqui */
 }
 
 header nav {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+    justify-content: space-between;
+    padding-left: 20px;
+    gap: 16px;
+    width: 100%;
+    position: relative;
+    background: transparent;
+    box-shadow: none;
 }
 
-.logo {
+header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Centraliza os botões de navegação */
+header nav ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    margin: 0 0 0 100px; /* Adiciona margem à esquerda para empurrar os botões mais à direita */
+    padding: 0;
+}
+
+nav .logo { 
+    margin-right: 2rem;
     display: flex;
     align-items: center;
     font-size: 1.8rem;
     font-weight: bold;
     color: var(--secondary-color);
 }
+.logo {
+    display: flex;
+    align-items: center; 
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 60px;
     margin-right: 10px;
-    border-radius: 50%;
 }
 
 header nav ul {
     display: flex;
+    flex-direction: row;
+    margin-top: 4px;
+    margin-bottom: 0;
+    align-items: center;
 }
 
 header nav ul li {
@@ -97,9 +135,163 @@ header nav ul li a:focus {
     outline: 2px solid var(--secondary-color);
 }
 
+/* Nav Actions - Botão de menu e dropdown */
+.nav-actions {
+    position: relative;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.menu-btn {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    font-size: 1.5rem;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    font-weight: 600;
+    outline: none;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-btn:hover,
+.menu-btn:focus {
+    background: var(--primary-dark);
+    color: var(--secondary-color);
+    box-shadow: 0 4px 16px rgba(0,123,255,0.15);
+}
+
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,123,255,0.13);
+    border-radius: 10px;
+    z-index: 9999;
+    padding: 14px 0;
+    flex-direction: column;
+    gap: 0;
+    border: 2px solid var(--primary-color);
+    animation: fadeInMenu 0.18s;
+}
+
+@keyframes fadeInMenu {
+    from { opacity: 0; transform: translateY(-10px);}
+    to   { opacity: 1; transform: translateY(0);}
+}
+
+.menu-dropdown.show {
+    display: flex;
+}
+
+.menu-dropdown button,
+.menu-dropdown .admin-link {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    padding: 14px 32px;
+    text-align: left;
+    width: 100%;
+    font-size: 1.08rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    border-radius: 0;
+    outline: none;
+    text-decoration: none;
+    display: block;
+    font-family: inherit;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+.menu-dropdown button:hover,
+.menu-dropdown .admin-link:hover,
+.menu-dropdown button:focus,
+.menu-dropdown .admin-link:focus {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.menu-dropdown .admin-link {
+    border-top: 1px solid var(--border-color);
+    margin-top: 6px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding-top: 16px;
+}
+
+/* Search Bar */
+/* Barra de Pesquisa - Novo estilo consistente */
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    background: transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    height: 44px;
+    flex: 0 0 320px;
+    max-width: 400px;
+    min-width: 200px;
+    border: 2px solid transparent; /* Contorno transparente */
+    transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.search-bar input[type="search"] {
+    border: none;
+    padding: 12px 16px;
+    font-size: 1.08rem;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    background: transparent;
+    color: var(--secondary-color);
+    width: 100%;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+}
+
+.search-bar input[type="search"]:focus {
+    background: rgba(255,255,255,0.08);
+    color: var(--secondary-color);
+}
+
+.search-bar button {
+    border: 2px solid transparent; /* Botão sem contorno visível */
+    background: transparent;        /* Botão transparente */
+    color: var(--secondary-color);
+    padding: 0 20px;
+    height: 100%;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar button:hover,
+.search-bar button:focus {
+    background: rgba(0,123,255,0.12); /* Leve destaque ao passar o mouse */
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+}
+
 /* Main Content */
 main {
-    padding-top: 80px;
+    padding-top: 0px;
 }
 
 section {
@@ -176,19 +368,72 @@ p {
     outline: none;
 }
 
+.btn-contact {
+    display: inline-block;
+    background: transparent;
+    color: var(--secondary-color);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+.btn-contact:hover,
+.btn-contact:focus {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-color);
+    outline: 2px solid var(--secondary-color);
+}
+
+/* Hero Section */
 /* Hero Section */
 .hero {
-    background: var(--light-gray);
+    background: url('../images/hero-bg.jpg') center center/cover no-repeat;
+    background-attachment: unset;
+    width: 100vw;
+    min-width: 100%;
+    left: 0;
+    right: 0;
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     min-height: 80vh;
     gap: 40px;
+    overflow: hidden;
+    text-align: center;
+    z-index: 1;
+
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45); /* Escurece para melhor contraste do texto */
+    z-index: 1;
 }
 
 .hero-content {
     flex: 1;
-    text-align: left;
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content h1 {
+    color: var(--primary-color);
 }
 
 .hero-image {
@@ -365,6 +610,53 @@ p {
     margin-top: 10px;
 }
 
+/* Modal de Contato */
+.contact-modal {
+    display:flex;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content:center;
+    align-items: center;
+}
+
+.contact-modal.show {
+    display: flex;
+    animation: fadeInMenu 0.2s;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-modal-content {
+    background: var(--secondary-color);
+    padding: 40px 30px 30px 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,123,255,0.18);
+    max-width: 420px;
+    width: 95%;
+    position: relative;
+    margin: 0;
+}
+
+.close-modal {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: var(--primary-dark);
+    outline: none;
+}
+
 /* Footer */
 footer {
     background: var(--primary-color);
@@ -444,6 +736,12 @@ footer {
     
     section {
         padding: 60px 20px;
+    }
+
+    .search-bar {
+        margin: 10px 0 10px 0;
+        width: 100%;
+        justify-content: center;
     }
 }
 

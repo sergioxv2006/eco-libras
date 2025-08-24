@@ -8,66 +8,48 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/accessibility.css">
 </head>
-<body>
-    <!-- Botão para pular para o conteúdo principal -->
-    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
-    
-    <!-- Barra de ferramentas de acessibilidade -->
-    <div class="accessibility-toolbar" role="toolbar" aria-label="Ferramentas de acessibilidade">
-        <button onclick="adjustFontSize('increase')" aria-label="Aumentar tamanho da fonte">A+</button>
-        <button onclick="adjustFontSize('decrease')" aria-label="Diminuir tamanho da fonte">A-</button>
-        <button onclick="adjustFontSize('reset')" aria-label="Resetar tamanho da fonte">A</button>
-        <button onclick="toggleHighContrast()" aria-label="Alternar alto contraste">Contraste</button>
-        <button onclick="toggleScreenReader()" aria-label="Ativar/desativar leitor de tela">🔊</button>
-    </div>
 
     <header role="banner">
         <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
-                <img src="images/Imagem do WhatsApp de 2025-08-06 à(s) 11.10.16_6deb6ab8.jpg" alt="Ícone de acessibilidade" class="logo-icon">
-                Curso de Libras
+                <img src="images\WhatsApp Image 2025-08-23 at 18.20.33.jpeg" alt="Ícone de acessibilidade" class="logo-icon">
+                Eco Libras
             </div>
             <ul>
                 <li><a href="#home" aria-label="Ir para início">Início</a></li>
-                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li><a href="#courses" aria-label="Ir para cursos">Cursos</a></li>
-                <li><a href="#contact" aria-label="Ir para contato">Contato</a></li>
-                <li><a href="accessibility.html" aria-label="Ir para página de acessibilidade">Acessibilidade</a></li>
+                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li>
+                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">
+                        Contato
+                    </button>
+                </li>
             </ul>
+            <form class="search-bar" role="search" aria-label="Pesquisar no site">
+                <input type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar">
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+            <!-- Botão/menu de acessibilidade e admin -->
+            <div class="nav-actions">
+                <button class="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu de opções" onclick="toggleMenu()">
+                    ☰
+                </button>
+                <div class="menu-dropdown" id="menuDropdown" aria-label="Menu de opções">
+                    <a href="admin.html" class="admin-link">Admin</a>
+                    <button onclick="changeFontSize(1.1)">A+</button>
+                    <button onclick="changeFontSize(1)">A</button>
+                    <button onclick="changeFontSize(0.9)">A-</button>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main role="main" id="main-content">
         <section id="home" class="hero">
             <div class="hero-content">
-                <h1>Aprenda Libras de Forma Acessível e Audiovisual</h1>
-                <p>Nosso curso oferece uma experiência completa para você dominar a Língua Brasileira de Sinais com recursos audiovisuais e total acessibilidade.</p>
-                <a href="#courses" class="btn" aria-label="Ver nossos cursos disponíveis">Ver Cursos</a>
-            </div>
-            <div class="hero-image">
-                <img src="images/sign_language_icon1.jpg" alt="Ilustração de pessoa usando linguagem de sinais" class="hero-img">
-            </div>
-        </section>
-
-        <section id="about" class="about-us">
-            <h2>Sobre Nós</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Somos uma plataforma dedicada a tornar o aprendizado de Libras acessível a todos, com foco em conteúdo audiovisual e recursos de acessibilidade completos.</p>
-                    <p>Nossa missão é quebrar barreiras de comunicação e promover a inclusão através do ensino de qualidade da Língua Brasileira de Sinais.</p>
-                </div>
-                <div class="about-features">
-                    <div class="feature">
-                        <img src="images/accessibility_icon2.jpg" alt="Ícone de acessibilidade" class="feature-icon">
-                        <h3>100% Acessível</h3>
-                        <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
-                    </div>
-                    <div class="feature">
-                        <img src="images/accessibility_icon3.jpg" alt="Ícone de recursos audiovisuais" class="feature-icon">
-                        <h3>Audiovisual</h3>
-                        <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
-                    </div>
-                </div>
+                <h1>Descubra o Glossário de Libras para Cursos</h1>
+                <p>Tenha acesso a um glossário exclusivo em Língua Brasileira de Sinais, com os principais termos usados em cursos e no ambiente acadêmico.</p>
+                <a href="#courses" class="btn" aria-label="Ver nossos cursos disponíveis">Ver Glossário</a>
             </div>
         </section>
 
@@ -109,10 +91,46 @@
                 </article>
             </div>
         </section>
+    </main>
 
-        <section id="contact" class="contact">
+        <section id="about" class="about-us">
+            <h2>Sobre Nós</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Somos uma plataforma dedicada a tornar o aprendizado de Libras acessível a todos, com foco em conteúdo audiovisual e recursos de acessibilidade completos.</p>
+                    <p>Nossa missão é quebrar barreiras de comunicação e promover a inclusão através do ensino de qualidade da Língua Brasileira de Sinais.</p>
+                </div>
+                <div class="about-features">
+                    <div class="feature">
+                        <img src="images/accessibility_icon2.jpg" alt="Ícone de acessibilidade" class="feature-icon">
+                        <h3>100% Acessível</h3>
+                        <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="images/accessibility_icon3.jpg" alt="Ícone de recursos audiovisuais" class="feature-icon">
+                        <h3>Audiovisual</h3>
+                        <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+            <p><a href="accessibility.html" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        </div>
+    </footer>
+
+    <div id="contact-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" >
+        <div class="contact-modal-content">
+            <button class="close-modal" aria-label="Fechar contato" id="close-contact">&times;</button>
             <h2>Entre em Contato</h2>
-            <p>Tem dúvidas? Entre em contato conosco!</p>
+            <p>Tem dúvidas ou adicionar um nova palavra?</p>
+            <p> Entre em contato conosco!</p>
             <form role="form" aria-label="Formulário de contato">
                 <div class="form-group">
                     <label for="name">Nome:</label>
@@ -131,19 +149,39 @@
                 </div>
                 <button type="submit" class="btn" aria-label="Enviar mensagem">Enviar</button>
             </form>
-        </section>
-    </main>
-
-    <footer role="contentinfo">
-        <div class="footer-content">
-            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
-            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
-            <p><a href="accessibility.html" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
         </div>
-    </footer>
+    </div>
 
     <script src="js/script.js"></script>
     <script src="js/accessibility.js"></script>
+    <script>
+        // filepath: c:\Users\gusta\Documents\GitHub\eco-libras\js\script.js
+        // ...existing code...
+        function toggleMenu() {
+            const menu = document.getElementById('menuDropdown');
+            menu.classList.toggle('show');
+            // Fecha ao clicar fora
+            document.addEventListener('click', function handler(e) {
+                if (!menu.contains(e.target) && !e.target.classList.contains('menu-btn')) {
+                    menu.classList.remove('show');
+                    document.removeEventListener('click', handler);
+                }
+            });
+        }
+
+        function changeFontSize(scale) {
+            document.documentElement.style.fontSize = (scale * 100) + '%';
+        }
+
+        // Abrir e fechar modal de contato
+        document.getElementById('open-contact').addEventListener('click', function() {
+            document.getElementById('contact-modal').style.display = 'block';
+        });
+
+        document.getElementById('close-contact').addEventListener('click', function() {
+            document.getElementById('contact-modal').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
 

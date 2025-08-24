@@ -152,6 +152,30 @@ document.addEventListener('DOMContentLoaded', function() {
     sections.forEach(section => {
         sectionObserver.observe(section);
     });
+    
+    // Modal de contato centralizado
+    document.getElementById('open-contact').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('contact-modal').classList.add('show');
+    });
+
+    document.getElementById('close-contact').addEventListener('click', function() {
+        document.getElementById('contact-modal').classList.remove('show');
+    });
+
+    // Fecha ao clicar fora do conteúdo do modal
+    document.getElementById('contact-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('show');
+        }
+    });
+
+    // Fecha com ESC
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('contact-modal').classList.remove('show');
+        }
+    });
 });
 
 // Função para alternar alto contraste (pode ser ativada por botão)
