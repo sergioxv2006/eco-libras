@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curso de Libras Audiovisual - Aprenda com Acessibilidade</title>
     <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    
 </head>
 
     <header role="banner">
         <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
-                <img src="images\WhatsApp Image 2025-08-23 at 18.20.33.jpeg" alt="Ícone de acessibilidade" class="logo-icon">
-                Eco Libras
+                <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
+                    Eco Libras
             </div>
             <ul>
                 <li><a href="#home" aria-label="Ir para início">Início</a></li>
@@ -57,7 +58,7 @@
             <h2>Nossos Cursos</h2>
             <div class="course-list">
                 <article class="course-item">
-                    <img src="images/sign_language_icon2.jpg" alt="Ícone do curso básico de Libras" class="course-icon">
+                    <img src="{{ url_for('static', filename='images/sign_language_icon2.jpg') }}" alt="Ícone do curso básico de Libras" class="course-icon">
                     <h3>Libras Básico</h3>
                     <p>Comece sua jornada na Libras com os fundamentos essenciais. Aprenda o alfabeto, números e sinais básicos do dia a dia.</p>
                     <ul class="course-features">
@@ -68,7 +69,7 @@
                     <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso básico">Saiba Mais</a>
                 </article>
                 <article class="course-item">
-                    <img src="images/sign_language_icon1.jpg" alt="Ícone do curso intermediário de Libras" class="course-icon">
+                    <img src="{{ url_for('static', filename='images/sign_language_icon1.jpg') }}" alt="Ícone do curso intermediário de Libras" class="course-icon">
                     <h3>Libras Intermediário</h3>
                     <p>Aprofunde seus conhecimentos e pratique a conversação. Desenvolva fluência em contextos do cotidiano.</p>
                     <ul class="course-features">
@@ -79,7 +80,7 @@
                     <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso intermediário">Saiba Mais</a>
                 </article>
                 <article class="course-item">
-                    <img src="images/accessibility_icon1.jpg" alt="Ícone do curso avançado de Libras" class="course-icon">
+                    <img src="{{ url_for('static', filename='images/accessibility_icon1.jpg') }}" alt="Ícone do curso avançado de Libras" class="course-icon">
                     <h3>Libras Avançado</h3>
                     <p>Domine a Libras e explore tópicos complexos. Prepare-se para ser um comunicador fluente.</p>
                     <ul class="course-features">
@@ -102,12 +103,12 @@
                 </div>
                 <div class="about-features">
                     <div class="feature">
-                        <img src="images/accessibility_icon2.jpg" alt="Ícone de acessibilidade" class="feature-icon">
+                        <img src="{{ url_for('static', filename='images/accessibility_icon2.jpg') }}" alt="Ícone de acessibilidade" class="feature-icon">
                         <h3>100% Acessível</h3>
                         <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
                     </div>
                     <div class="feature">
-                        <img src="images/accessibility_icon3.jpg" alt="Ícone de recursos audiovisuais" class="feature-icon">
+                        <img src="{{ url_for('static', filename='images/accessibility_icon3.jpg') }}" alt="Ícone de recursos audiovisuais" class="feature-icon">
                         <h3>Audiovisual</h3>
                         <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
                     </div>
@@ -121,7 +122,7 @@
         <div class="footer-content">
             <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
             <p>Comprometidos com a acessibilidade e inclusão digital.</p>
-            <p><a href="accessibility.html" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+            <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
         </div>
     </footer>
 
@@ -152,8 +153,8 @@
         </div>
     </div>
 
-    <script src="js/script.js"></script>
-    <script src="js/accessibility.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
     <script>
         // filepath: c:\Users\gusta\Documents\GitHub\eco-libras\js\script.js
         // ...existing code...

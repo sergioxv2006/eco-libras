@@ -1,4 +1,9 @@
-/* Variáveis de Cores */
+/* =============================
+    style.css
+    CSS principal do site Eco Libras
+    Responsável pelo layout, cores e responsividade do index.html
+    ============================= */
+
 :root {
     --primary-color: #007bff; /* Azul */
     --primary-dark: #0056b3; /* Azul escuro */
