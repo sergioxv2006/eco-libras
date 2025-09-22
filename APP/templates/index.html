@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso de Libras Audiovisual - Aprenda com Acessibilidade</title>
+    <title>ecolibras</title>
     <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
@@ -36,7 +36,7 @@
                     ☰
                 </button>
                 <div class="menu-dropdown" id="menuDropdown" aria-label="Menu de opções">
-                    <a href="admin.html" class="admin-link">Admin</a>
+                    <a href="{{ url_for('principal.pagina_admin') }}" class="admin-link">Admin</a>
                     <button onclick="changeFontSize(1.1)">A+</button>
                     <button onclick="changeFontSize(1)">A</button>
                     <button onclick="changeFontSize(0.9)">A-</button>

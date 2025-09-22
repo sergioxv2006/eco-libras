@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ecolibras</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    <style>
+        body {
+            background: var(--background-color, #f4f6fa);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: var(--primary-dark, #222);
+        }
+        .admin-container {
+            max-width: 1000px;
+            margin: 60px auto 40px auto;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 16px #0002;
+            padding: 40px 32px 32px 32px;
+        }
+        .admin-title {
+            text-align: center;
+            margin-bottom: 32px;
+            color: var(--primary-color, #2a5d84);
+            font-size: 2.3rem;
+            letter-spacing: 1px;
+        }
+        .admin-main {
+            display: flex;
+            gap: 32px;
+        }
+        .admin-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-width: 170px;
+            margin-top: 24px;
+        }
+        .admin-sidebar button {
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 1.13rem;
+            font-weight: 600;
+            border: 2px solid var(--primary-color, #2a5d84);
+            background: var(--primary-color, #2a5d84);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            text-align: left;
+            box-shadow: 0 1px 4px #0001;
+        }
+        .admin-sidebar button.active, .admin-sidebar button:hover, .admin-sidebar button:focus {
+            background: var(--primary-dark, #1d3e5c);
+            color: #fff;
+            box-shadow: 0 2px 8px #0002;
+        }
+        .admin-content {
+            flex: 1;
+        }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .glossario-list {
+            margin: 32px 0;
+        }
+        .glossario-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e6ef;
+            background: #f9fbfd;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .glossario-item:last-child {
+            border-bottom: none;
+        }
+        .glossario-item-video {
+            max-width: 320px;
+            min-width: 180px;
+            flex: 0 0 320px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #eaf2fa;
+        }
+        .glossario-item-form {
+            flex: 1;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 20px 20px 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 6px #0001;
+        }
+        .glossario-item-form label {
+            font-weight: 600;
+            color: var(--primary-color, #2a5d84);
+        }
+        .glossario-item-form input,
+        .glossario-item-form textarea {
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1.5px solid #c2d3e6;
+            padding: 8px 10px;
+            font-size: 1rem;
+        }
+        .glossario-item-form textarea {
+            min-height: 48px;
+        }
+        .glossario-item-form .actions {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn, .btn-secondary {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .btn {
+            background: var(--primary-color, #2a5d84);
+            color: #fff;
+        }
+        .btn-secondary {
+            background: #eaf2fa;
+            color: var(--primary-color, #2a5d84);
+            border: 1.5px solid var(--primary-color, #2a5d84);
+        }
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: var(--primary-color, #2a5d84);
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .admin-main {
+                flex-direction: column;
+                gap: 0;
+            }
+            .admin-sidebar {
+                flex-direction: row;
+                min-width: 0;
+                gap: 8px;
+                margin-bottom: 18px;
+                margin-top: 0;
+            }
+            .admin-sidebar button {
+                flex: 1;
+                text-align: center;
+            }
+            .glossario-item {
+                flex-direction: column;
+                gap: 18px;
+            }
+            .glossario-item-video {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 600px) {
+            .admin-container {
+                padding: 18px 4vw;
+            }
+            .admin-main {
+                flex-direction: column;
+            }
+            form.admin-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            form.admin-form input, form.admin-form textarea, form.admin-form button, form.admin-form input[type="file"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .glossario-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header role="banner">
+        <nav role="navigation" aria-label="Menu principal" style="background:transparent;padding:0;box-shadow:none;">
+            <div style="display:flex;align-items:center;min-height:64px;width:100%;position:relative;">
+                <a href="/" aria-label="Ir para início" style="display:flex;align-items:center;text-decoration:none;gap:10px;padding-left:1vw;z-index:2;">
+                    <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon" style="height:44px;width:auto;border-radius:6px;">
+                    <span style="font-size:2rem;font-weight:700;color:#fff;text-shadow:0 2px 8px #000a;">Eco Libras</span>
+                </a>
+                <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.25rem;font-weight:600;color:#fff;text-shadow:0 2px 8px #000a;white-space:nowrap;">Administração do Glossário</span>
+                <div style="display:flex;gap:10px;position:absolute;right:2vw;top:50%;transform:translateY(-50%);z-index:2;">
+                    <button id="btn-add" class="btn-navbar active" type="button" style="background:rgba(255,255,255,0.10);color:#fff;font-weight:600;border:none;padding:10px 22px;border-radius:8px;font-size:1rem;transition:background 0.2s;">Adicionar</button>
+                    <button id="btn-edit" class="btn-navbar" type="button" style="background:rgba(255,255,255,0.10);color:#fff;font-weight:600;border:none;padding:10px 22px;border-radius:8px;font-size:1rem;transition:background 0.2s;">Editar</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="admin-container">
+        <div class="admin-main">
+            <div class="admin-content" style="width:100%;">
+                <div id="section-add" class="admin-section active">
+                    <div style="display:flex;gap:18px;margin-bottom:18px;">
+                        <button id="btn-add-termo" type="button" class="btn" style="min-width:160px;">Adicionar novo termo</button>
+                        <button id="btn-add-curso" type="button" class="btn" style="min-width:160px;">Adicionar novo curso</button>
+                    </div>
+                    <div id="form-add-termo" style="display:block;">
+                        <form class="admin-form" id="form-termo-add" enctype="multipart/form-data" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:420px;margin:0 auto;">
+                            <h3 style="margin-bottom:8px;color:var(--primary-color);font-size:1.15rem;">Adicionar novo termo</h3>
+                            <label for="termo-novo" style="font-weight:600;">Nome do termo</label>
+                            <input id="termo-novo" type="text" name="termo" placeholder="Novo termo" required style="font-size: 0.95rem;">
+                            <label for="curso-novo" style="font-weight:600;">Curso</label>
+                            <select id="curso-novo" name="curso_id" required style="font-size: 0.95rem;"></select>
+                            <label for="desc-novo" style="font-weight:600;">Descrição</label>
+                            <textarea id="desc-novo" name="descricao" placeholder="Descrição" required style="min-height: 32px; font-size: 0.95rem;"></textarea>
+                            <label for="video-novo" style="font-weight:600;">Vídeo <span style="color:red;">*</span></label>
+                            <input id="video-novo" type="file" name="video" accept="video/*" required style="padding: 2px 6px; font-size: 0.95rem;">
+                            <button type="submit" class="btn" style="max-width: 180px;margin-top:10px;">Adicionar termo</button>
+                        </form>
+                    </div>
+                    <div id="form-add-curso" style="display:none;">
+                        <form class="admin-form" id="form-curso-add" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:420px;margin:0 auto;background:#f6f7fa;box-shadow:0 1px 6px #0001;border-radius:10px;padding:18px 18px 14px 18px;">
+                            <h3 style="margin-bottom:8px;color:var(--primary-color);font-size:1.15rem;">Adicionar novo curso</h3>
+                            <label for="curso-novo-curso" style="font-weight:600;">Nome do curso</label>
+                            <input id="curso-novo-curso" type="text" name="curso" placeholder="Nome do novo curso" required style="font-size: 0.95rem;">
+                            <button type="submit" class="btn" style="max-width: 180px;margin-top:10px;">Adicionar curso</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="section-edit" class="admin-section">
+                    <div style="display:flex;gap:18px;margin-bottom:18px;">
+                        <button id="btn-edit-termo" type="button" class="btn active" style="min-width:160px;">Editar termo</button>
+                        <button id="btn-edit-curso" type="button" class="btn" style="min-width:160px;">Editar curso</button>
+                    </div>
+                    <div id="form-edit-termo" style="display:block;">
+                        <div style="margin-bottom:18px;display:flex;gap:12px;align-items:center;">
+                            <input id="filtro-curso" list="datalist-cursos" placeholder="Filtrar por curso..." style="padding:10px 14px;border-radius:8px;border:2px solid var(--border-color);font-size:1rem;min-width:180px;">
+                            <datalist id="datalist-cursos"></datalist>
+                            <input id="search-termo" type="text" placeholder="Pesquisar termo..." style="flex:1;padding:10px 14px;border-radius:8px;border:2px solid var(--border-color);font-size:1rem;">
+                            <button type="button" onclick="pesquisarTermo()" style="padding:10px 22px;border-radius:8px;font-size:1rem;">Pesquisar</button>
+                        </div>
+                        <div id="feedback-msg" style="margin-bottom:10px;"></div>
+                        <div class="glossario-list" id="glossario-list-edit"></div>
+                    </div>
+                    <div id="form-edit-curso" style="display:none;">
+                        <form class="admin-form" id="form-curso-edit" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:420px;margin:0 auto;background:#f6f7fa;box-shadow:0 1px 6px #0001;border-radius:10px;padding:18px 18px 14px 18px;">
+                            <h3 style="margin-bottom:8px;color:var(--primary-color);font-size:1.15rem;">Editar curso</h3>
+                            <label for="curso-editar-select" style="font-weight:600;">Selecione o curso</label>
+                            <select id="curso-editar-select" name="curso_id" required style="font-size: 0.95rem;"></select>
+                            <label for="curso-editar-nome" style="font-weight:600;">Novo nome do curso</label>
+                            <input id="curso-editar-nome" type="text" name="novo_nome" placeholder="Novo nome do curso" required style="font-size: 0.95rem;">
+                            <div style="display:flex;gap:12px;align-items:center;margin-top:10px;">
+                                <button type="submit" class="btn" style="max-width: 180px;">Salvar edição</button>
+                                <button type="button" class="btn-secondary" id="btn-remover-curso" style="max-width: 180px;">Remover curso</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    // Utilitário para feedback
+    function showFeedback(msg, type='success') {
+        const el = document.getElementById('feedback-msg');
+        el.textContent = msg;
+        el.style.color = type==='success' ? 'green' : 'red';
+        el.style.fontWeight = 'bold';
+        setTimeout(()=>{ el.textContent = ''; }, 2500);
+    }
+
+    // Carregar cursos para selects
+    async function carregarCursosSelect(selectId, selectedId) {
+        const resp = await fetch('/admin/buscar_cursos');
+        const cursos = await resp.json();
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">Selecione um curso</option>';
+        for(const curso of cursos) {
+            select.innerHTML += `<option value='${curso.id}' ${selectedId==curso.id?'selected':''}>${curso.nome}</option>`;
+        }
+    }
+    carregarCursosSelect('curso-novo');
+    // Busca dinâmica de cursos para o filtro
+    async function carregarCursosDatalist(filtro = '') {
+        const resp = await fetch('/admin/buscar_cursos?termo=' + encodeURIComponent(filtro));
+        const cursos = await resp.json();
+        const datalist = document.getElementById('datalist-cursos');
+        datalist.innerHTML = '<option value="">Todos os cursos</option>';
+        for(const curso of cursos) {
+            datalist.innerHTML += `<option value='${curso.nome}' data-id='${curso.id}'>`;
+        }
+    }
+    document.getElementById('filtro-curso').addEventListener('input', function(e) {
+        carregarCursosDatalist(this.value);
+    });
+    carregarCursosDatalist();
+
+    // Alternância de abas principais
+    const btnAdd = document.getElementById('btn-add');
+    const btnEdit = document.getElementById('btn-edit');
+    var sectionAdd = document.getElementById('section-add');
+    var sectionEdit = document.getElementById('section-edit');
+    btnAdd.onclick = function() {
+        btnAdd.classList.add('active');
+        btnEdit.classList.remove('active');
+        sectionAdd.classList.add('active');
+        sectionEdit.classList.remove('active');
+    };
+    btnEdit.onclick = function() {
+        btnEdit.classList.add('active');
+        btnAdd.classList.remove('active');
+        sectionEdit.classList.add('active');
+        sectionAdd.classList.remove('active');
+        document.getElementById('btn-edit-termo').classList.add('active');
+        document.getElementById('btn-edit-curso').classList.remove('active');
+        document.getElementById('form-edit-termo').style.display = 'block';
+        document.getElementById('form-edit-curso').style.display = 'none';
+        pesquisarTermo();
+    };
+
+    document.getElementById('btn-edit-termo').onclick = function() {
+        this.classList.add('active');
+        document.getElementById('btn-edit-curso').classList.remove('active');
+        document.getElementById('form-edit-termo').style.display = 'block';
+        document.getElementById('form-edit-curso').style.display = 'none';
+        pesquisarTermo();
+    };
+    document.getElementById('btn-edit-curso').onclick = function() {
+        this.classList.add('active');
+        document.getElementById('btn-edit-termo').classList.remove('active');
+        document.getElementById('form-edit-termo').style.display = 'none';
+        document.getElementById('form-edit-curso').style.display = 'block';
+        carregarCursosSelect('curso-editar-select');
+    };
+
+    // Remover curso via AJAX
+    document.getElementById('btn-remover-curso').onclick = async function() {
+        const select = document.getElementById('curso-editar-select');
+        const cursoId = select.value;
+        if (!cursoId) {
+            alert('Selecione um curso para remover.');
+            return;
+        }
+        if (!confirm('Tem certeza que deseja remover este curso?')) return;
+        const formData = new FormData();
+        formData.append('id', cursoId);
+        const resp = await fetch('/admin/remover_curso', {
+            method: 'POST',
+            body: formData
+        });
+        if (resp.ok) {
+            alert('Curso removido com sucesso!');
+            carregarCursosSelect('curso-editar-select');
+            carregarCursosSelect('curso-novo');
+            carregarCursosSelect('filtro-curso');
+            select.value = '';
+            document.getElementById('curso-editar-nome').value = '';
+        } else {
+            alert('Erro ao remover curso.');
+        }
+    };
+
+    // Alternância add termo/curso
+    document.getElementById('btn-add-termo').onclick = function() {
+        document.getElementById('form-add-termo').style.display = 'block';
+        document.getElementById('form-add-curso').style.display = 'none';
+    };
+    document.getElementById('btn-add-curso').onclick = function() {
+        document.getElementById('form-add-termo').style.display = 'none';
+        document.getElementById('form-add-curso').style.display = 'block';
+    };
+
+    // Adicionar termo via AJAX
+    document.getElementById('form-termo-add').onsubmit = async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const resp = await fetch('/admin/adicionar', { method:'POST', body:formData });
+        if(resp.ok) {
+            showFeedback('Termo adicionado com sucesso!');
+            this.reset();
+            carregarCursosSelect('curso-novo');
+            pesquisarTermo();
+        } else {
+            showFeedback('Erro ao adicionar termo','error');
+        }
+    };
+    // Adicionar curso via AJAX
+    document.getElementById('form-curso-add').onsubmit = async function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const resp = await fetch('/admin/adicionar_curso', { method:'POST', body:formData });
+        if(resp.ok) {
+            showFeedback('Curso adicionado com sucesso!');
+            this.reset();
+            carregarCursosSelect('curso-novo');
+            carregarCursosSelect('filtro-curso');
+        } else {
+            showFeedback('Erro ao adicionar curso','error');
+        }
+    };
+
+    // Pesquisa dinâmica de termos
+    document.getElementById('search-termo').addEventListener('input', pesquisarTermo);
+    document.getElementById('filtro-curso').addEventListener('change', function() {
+        pesquisarTermo();
+    });
+    document.getElementById('btn-edit').addEventListener('click', pesquisarTermo);
+
+    async function pesquisarTermo() {
+        const termo = document.getElementById('search-termo').value.trim();
+        const cursoNome = document.getElementById('filtro-curso').value.trim();
+        let cursoId = '';
+        if (cursoNome) {
+            // Buscar o id do curso pelo nome digitado
+            const resp = await fetch('/admin/buscar_cursos?termo=' + encodeURIComponent(cursoNome));
+            const cursos = await resp.json();
+            const match = cursos.find(c => c.nome.toLowerCase() === cursoNome.toLowerCase());
+            if (match) cursoId = match.id;
+        }
+        const lista = document.getElementById('glossario-list-edit');
+        lista.innerHTML = '<p>Buscando...</p>';
+        let url = `/admin/buscar?termo=${encodeURIComponent(termo)}`;
+        if(cursoId) url += `&curso_id=${cursoId}`;
+        const resp = await fetch(url);
+        const dados = await resp.json();
+        const cursosResp = await fetch('/admin/buscar_cursos');
+        const cursos = await cursosResp.json();
+        if (!dados.length) {
+            lista.innerHTML = '<p>Nenhum termo cadastrado no glossário.</p>';
+            return;
+        }
+        lista.innerHTML = '';
+        for (const item of dados) {
+            let videoHtml = '';
+            if (item.video) {
+                videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${item.video}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
+            }
+            let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;
+            selectCurso += `<option value=''>Selecione um curso</option>`;
+            let nomeCursoAtual = '';
+            for (const curso of cursos) {
+                if(item.curso_id==curso.id) nomeCursoAtual = curso.nome;
+                selectCurso += `<option value='${curso.id}' ${item.curso_id==curso.id ? 'selected' : ''}>${curso.nome}</option>`;
+            }
+            selectCurso += `</select>`;
+            lista.innerHTML += `
+            <div class='glossario-item' data-termo='${item.termo.toLowerCase()}'>
+                ${videoHtml}
+                <form class='glossario-item-form' method='post' action='/admin/editar' enctype='multipart/form-data' onsubmit='return salvarTermoAjax(event, this)'>
+                    <input type='hidden' name='id' value='${item.id}'>
+                    <div style='font-weight:700;font-size:1.1rem;margin-bottom:2px;color:var(--primary-color);'>Nome atual do termo: <span style='color:var(--primary-dark);font-weight:700;'>${item.termo}</span></div>
+                    <label for='termo-${item.id}'>Editar nome do termo</label>
+                    <input id='termo-${item.id}' type='text' name='termo' value='${item.termo}' required placeholder='Editar termo'>
+                    <label for='curso-${item.id}'>Curso</label>
+                    <div style='display:flex;align-items:center;gap:8px;'>
+                        ${selectCurso}
+                    </div>
+                    <label for='desc-${item.id}'>Descrição</label>
+                    <textarea id='desc-${item.id}' name='descricao' required placeholder='Editar descrição'>${item.descricao}</textarea>
+                    <div class='actions'>
+                        <button type='submit' class='btn-secondary'>Salvar</button>
+                        <button type='button' class='btn-secondary' onclick='removerTermoAjax(${item.id}, this)'>Remover</button>
+                        <label for='video-${item.id}' class='btn-secondary' style='padding:7px 32px; margin-bottom:0; cursor:pointer; min-width:150px; text-align:center; display:inline-block;'>
+                            Novo vídeo
+                            <input id='video-${item.id}' type='file' name='video' accept='video/*' style='display:none;' onchange="document.getElementById('video-file-name-${item.id}').textContent = this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';">
+                        </label>
+                        <span id='video-file-name-${item.id}' style='font-size:0.95rem;color:#555;'>Nenhum arquivo selecionado</span>
+                    </div>
+                </form>
+            </div>`;
+        }
+    }
+
+    // AJAX para salvar termo sem recarregar
+    async function salvarTermoAjax(event, form) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const resp = await fetch('/admin/editar', {
+            method: 'POST',
+            body: formData
+        });
+        if (resp.ok) {
+            showFeedback('Termo editado com sucesso!');
+            pesquisarTermo();
+        } else {
+            showFeedback('Erro ao editar termo','error');
+        }
+        return false;
+    }
+
+    // AJAX para remover termo sem recarregar
+    async function removerTermoAjax(id, btn) {
+        if (!confirm('Tem certeza que deseja remover este termo?')) return;
+        const formData = new FormData();
+        formData.append('id', id);
+        const resp = await fetch('/admin/remover', {
+            method: 'POST',
+            body: formData
+        });
+        if (resp.ok) {
+            showFeedback('Termo removido com sucesso!');
+            pesquisarTermo();
+        } else {
+            showFeedback('Erro ao remover termo','error');
+        }
+    }
+
+    // Executa busca inicial ao carregar a aba de edição
+    window.addEventListener('DOMContentLoaded', function() {
+        carregarCursosSelect('curso-novo');
+        carregarCursosSelect('filtro-curso');
+        carregarCursosSelect('curso-editar-select');
+        if(btnEdit.classList.contains('active')) {
+            pesquisarTermo();
+        }
+    });
+    </script>
+    <script>
+        // Alternância de seções
+        const btnAdd = document.getElementById('btn-add');
+        const btnEdit = document.getElementById('btn-edit');
+        const sectionAdd = document.getElementById('section-add');
+        const sectionEdit = document.getElementById('section-edit');
+        btnAdd.onclick = function() {
+            btnAdd.classList.add('active');
+            btnEdit.classList.remove('active');
+            sectionAdd.classList.add('active');
+            sectionEdit.classList.remove('active');
+        };
+        btnEdit.onclick = function() {
+            btnEdit.classList.add('active');
+            btnAdd.classList.remove('active');
+            sectionEdit.classList.add('active');
+            sectionAdd.classList.remove('active');
+            pesquisarTermo();
+        };
+
+        // Se a URL tiver ?editar_id=, ativa a aba de edição e faz a busca
+        window.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('editar_id')) {
+                btnEdit.classList.add('active');
+                btnAdd.classList.remove('active');
+                sectionEdit.classList.add('active');
+                sectionAdd.classList.remove('active');
+                pesquisarTermo();
+            }
+        });
+        // Pesquisa de termos (edição)
+        async function pesquisarTermo() {
+            const termo = document.getElementById('search-termo').value.trim();
+            const lista = document.getElementById('glossario-list-edit');
+            lista.innerHTML = '<p>Buscando...</p>';
+            const resp = await fetch(`/admin/buscar?termo=${encodeURIComponent(termo)}`);
+            const dados = await resp.json();
+            if (!dados.length) {
+                lista.innerHTML = '<p>Nenhum termo cadastrado no glossário.</p>';
+                return;
+            }
+            lista.innerHTML = '';
+            for (const item of dados) {
+                let videoHtml = '';
+                if (item.video) {
+                    videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${item.video}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
+                }
+                // Busca cursos dinamicamente
+                let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;
+                selectCurso += `<option value=''>Selecione um curso</option>`;
+                if(window.cursosList && window.cursosList.length) {
+                    for (const curso of window.cursosList) {
+                        selectCurso += `<option value='${curso.id}' ${item.curso_id==curso.id ? 'selected' : ''}>${curso.nome}</option>`;
+                    }
+                }
+                selectCurso += `</select>`;
+                lista.innerHTML += `
+                <div class='glossario-item' data-termo='${item.termo.toLowerCase()}'>
+                    ${videoHtml}
+                    <form class='glossario-item-form' method='post' action='/admin/editar' enctype='multipart/form-data' onsubmit='return salvarTermoAjax(event, this)'>
+                        <input type='hidden' name='id' value='${item.id}'>
+                        <div style='font-weight:700;font-size:1.1rem;margin-bottom:2px;color:var(--primary-color);'>Nome atual do termo: <span style='color:var(--primary-dark);font-weight:700;'>${item.termo}</span></div>
+                        <label for='termo-${item.id}'>Editar nome do termo</label>
+                        <input id='termo-${item.id}' type='text' name='termo' value='${item.termo}' required placeholder='Editar termo'>
+                        <label for='curso-${item.id}'>Curso</label>
+                        ${selectCurso}
+                        <label for='desc-${item.id}'>Descrição</label>
+                        <textarea id='desc-${item.id}' name='descricao' required placeholder='Editar descrição'>${item.descricao}</textarea>
+                        <div class='actions'>
+                            <button type='submit' class='btn-secondary'>Salvar</button>
+                            <button type='button' class='btn-secondary' onclick='removerTermoAjax(${item.id}, this)'>Remover</button>
+                            <label for='video-${item.id}' class='btn-secondary' style='padding:7px 32px; margin-bottom:0; cursor:pointer; min-width:150px; text-align:center; display:inline-block;'>
+                                Novo vídeo
+                                <input id='video-${item.id}' type='file' name='video' accept='video/*' style='display:none;' onchange="document.getElementById('video-file-name-${item.id}').textContent = this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';">
+                            </label>
+                            <span id='video-file-name-${item.id}' style='font-size:0.95rem;color:#555;'>Nenhum arquivo selecionado</span>
+                        </div>
+                    </form>
+                </div>`;
+            }
+
+        }
+
+        // AJAX para salvar termo sem recarregar
+        async function salvarTermoAjax(event, form) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const resp = await fetch('/admin/editar', {
+                method: 'POST',
+                body: formData
+            });
+            if (resp.ok) {
+                pesquisarTermo();
+                // Opcional: mostrar feedback
+            }
+            return false;
+        }
+
+        // AJAX para remover termo sem recarregar
+        async function removerTermoAjax(id, btn) {
+            if (!confirm('Tem certeza que deseja remover este termo?')) return;
+            const formData = new FormData();
+            formData.append('id', id);
+            const resp = await fetch('/admin/remover', {
+                method: 'POST',
+                body: formData
+            });
+            if (resp.ok) {
+                pesquisarTermo();
+            }
+        }
+        document.getElementById('search-termo').addEventListener('input', pesquisarTermo);
+        // Executa busca inicial ao carregar a aba de edição
+        document.getElementById('btn-edit').addEventListener('click', pesquisarTermo);
+    </script>
+</body>
+</html>
