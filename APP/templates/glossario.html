@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário | Eco Libras</title>
+    <meta name="description" content="Pesquise termos do glossário de Libras.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+</head>
+<body>
+    <!-- Header e Navegação Principal -->
+    <header role="banner">
+        <nav role="navigation" aria-label="Menu principal">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
+                Eco Libras
+            </div>
+            <ul>
+                <li><a href="{{ url_for('principal.pagina_inicial') }}" aria-label="Ir para início">Início</a></li>
+                <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário">Glossário</a></li>
+                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li>
+                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">Contato</button>
+                </li>
+            </ul>
+            <form class="search-bar" role="search" aria-label="Pesquisar no site">
+                <input type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar">
+                <button type="submit" aria-label="Buscar">🔍</button>
+            </form>
+            <!-- Botão/menu de acessibilidade e admin -->
+            <li>
+                <button id="open-admin-login" class="btn btn-contact" aria-label="Abrir login administrativo" type="button">Admin</button>
+            </li>
+        </nav>
+    </header>
+    <!-- Modal de Login Admin -->
+    <div id="admin-login-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
+        <div class="contact-modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
+            <h2 id="admin-login-title">Login Administrativo</h2>
+            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true" style="width:100%;padding:15px;border:2px solid var(--border-color);border-radius:8px;font-size:1rem;transition:border-color 0.3s ease;">
+                </div>
+                <button type="submit" class="btn" aria-label="Entrar">Entrar</button>
+                <div id="admin-login-feedback" style="margin-top:10px;font-weight:bold;"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+    // Modal de login admin
+    document.addEventListener('DOMContentLoaded', function() {
+        const openBtn = document.getElementById('open-admin-login');
+        const closeBtn = document.getElementById('close-admin-login');
+        const modal = document.getElementById('admin-login-modal');
+        const form = document.getElementById('admin-login-form');
+        const feedback = document.getElementById('admin-login-feedback');
+        if (openBtn && closeBtn && modal && form) {
+            openBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                modal.classList.add('show');
+            });
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                feedback.textContent = '';
+            });
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    modal.style.display = 'none';
+                    modal.classList.remove('show');
+                    feedback.textContent = '';
+                }
+            });
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.style.display = 'none';
+                    modal.classList.remove('show');
+                    feedback.textContent = '';
+                }
+            });
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('admin-username').value.trim();
+                const password = document.getElementById('admin-password').value.trim();
+                feedback.textContent = '';
+                if (!username || !password) {
+                    feedback.textContent = 'Preencha todos os campos.';
+                    feedback.style.color = 'red';
+                    return;
+                }
+                fetch('/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                .then(({ status, body }) => {
+                    if (status === 200 && body.success) {
+                        feedback.textContent = 'Login realizado! Redirecionando...';
+                        feedback.style.color = 'green';
+                        setTimeout(function() {
+                            window.location.href = body.redirect;
+                        }, 1000);
+                    } else {
+                        feedback.textContent = body.message || 'Usuário ou senha inválidos.';
+                        feedback.style.color = 'red';
+                    }
+                })
+                .catch(() => {
+                    feedback.textContent = 'Erro ao tentar logar. Tente novamente.';
+                    feedback.style.color = 'red';
+                });
+            });
+        }
+    });
+    </script>
+    <main role="main" id="main-content" style="margin-top:120px;">
+        <section id="glossario" class="glossario-section">
+            <div class="hero-content" style="margin-bottom: 2rem;">
+                <h1>Glossário de Libras</h1>
+                <p>Consulte, pesquise e explore os principais termos em Língua Brasileira de Sinais utilizados em cursos e no ambiente acadêmico.</p>
+            </div>
+            <form id="search-form" class="search-bar" role="search" aria-label="Pesquisar no glossário" style="gap:8px;max-width:600px;margin:0 auto 2rem auto;display:flex;align-items:center;">
+                <div style="display:flex;flex:1;gap:8px;align-items:center;">
+                    <input 
+                        type="search" 
+                        id="search-input" 
+                        placeholder="Digite o termo que deseja buscar..." 
+                        aria-label="Pesquisar termo no glossário" 
+                        style="flex:2;min-width:160px;padding:12px 16px;border-radius:8px;border:1.5px solid var(--border-color,#ccc);font-size:1rem;outline:none;transition:border-color 0.2s;"
+                    >
+                    <select 
+                        id="curso-select" 
+                        aria-label="Filtrar por curso" 
+                        style="flex:1;min-width:140px;border-radius:8px;padding:12px 10px;font-size:1rem;border:1.5px solid var(--border-color,#ccc);background:#fff;outline:none;transition:border-color 0.2s;"
+                    >
+                        <option value="">Todos os cursos</option>
+                    </select>
+                </div>
+                <button 
+                    type="submit" 
+                    aria-label="Buscar termo no glossário" 
+                    style="margin-left:8px;padding:12px 24px;border-radius:8px;background:var(--primary-color,#2e7d32);color:#fff;font-weight:bold;font-size:1rem;border:none;cursor:pointer;transition:background 0.2s;"
+                >
+                    🔍 Buscar
+                </button>
+            </form>
+            <div id="glossario-list" class="glossario-list" aria-live="polite">
+                <p>Digite um termo ou selecione um curso para pesquisar no glossário.</p>
+                <div id="glossario-lista" class="glossario-lista" aria-live="polite"></div>
+                <div id="glossario-paginacao" class="glossario-paginacao" style="display:flex;justify-content:center;gap:1rem;margin-top:1.5rem;"></div>
+            </div>
+        </section>
+    </main>
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+            <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        </div>
+    </footer>
+
+    <!-- Modal de Contato Acessível -->
+    <div id="contact-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
+        <div class="contact-modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar contato" id="close-contact" type="button">&times;</button>
+            <h2 id="contact-modal-title">Entre em Contato</h2>
+            <p>Tem dúvidas ou deseja adicionar uma nova palavra?</p>
+            <p>Entre em contato conosco!</p>
+            <form id="modal-contact-form" role="form" aria-labelledby="contact-modal-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" placeholder="Seu Nome" required aria-required="true" aria-describedby="name-help">
+                    <small id="name-help">Digite seu nome completo</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Seu Email" required aria-required="true" aria-describedby="email-help">
+                    <small id="email-help">Digite um endereço de email válido</small>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensagem:</label>
+                    <textarea id="message" name="message" placeholder="Sua Mensagem" required aria-required="true" aria-describedby="message-help"></textarea>
+                    <small id="message-help">Descreva sua dúvida ou comentário</small>
+                </div>
+                <button type="submit" class="btn" aria-label="Enviar mensagem">Enviar</button>
+                <div id="contact-feedback" style="margin-top:10px;font-weight:bold;"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+    // Carregar cursos para o select
+    function carregarCursos() {
+        fetch('/admin/buscar_cursos')
+            .then(res => res.json())
+            .then(cursos => {
+                const select = document.getElementById('curso-select');
+                cursos.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.nome;
+                    select.appendChild(opt);
+                });
+            });
+    }
+    carregarCursos();
+
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        buscarTermos();
+    });
+    document.getElementById('search-input').addEventListener('input', function(e) {
+        // Removido: mensagem só deve aparecer quando não houver itens após busca
+    });
+
+    document.getElementById('curso-select').addEventListener('change', function() {
+        buscarTermos();
+    });
+
+    // Exibir todos os termos ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+        buscarTermos();
+    });
+
+    function buscarTermos() {
+        const termo = document.getElementById('search-input').value.trim();
+        const cursoId = document.getElementById('curso-select').value;
+        const lista = document.getElementById('glossario-lista');
+        if (lista) lista.innerHTML = '<p>Buscando...</p>';
+        let url = `/admin/buscar?`;
+        if (termo) url += `termo=${encodeURIComponent(termo)}`;
+        if (cursoId) url += `${termo ? '&' : ''}curso_id=${cursoId}`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                window.termosGlossario = data;
+                window.paginaGlossario = 0;
+                renderizarTermosGlossario(undefined, termo, cursoId);
+            })
+            .catch(() => {
+                if (lista) lista.innerHTML = '<p>Erro ao buscar termos.</p>';
+            });
+    }
+
+    function renderizarTermosGlossario(pagina) {
+        const lista = document.getElementById('glossario-lista');
+        const paginacao = document.getElementById('glossario-paginacao');
+        const termos = window.termosGlossario || [];
+        if (typeof pagina === 'number') window.paginaGlossario = pagina;
+        const paginaAtual = window.paginaGlossario || 0;
+        if (!termos.length) {
+            if (lista) {
+                if (!termo && !cursoId) {
+                    lista.innerHTML = '<p style="text-align:center;color:#888;">Digite um termo ou selecione um curso para pesquisar no glossário.</p>';
+                } else {
+                    lista.innerHTML = '<p style="text-align:center;color:#888;">Nenhum termo encontrado.</p>';
+                }
+            }
+            if (paginacao) paginacao.innerHTML = '';
+            return;
+        }
+        const inicio = paginaAtual * 10;
+        const fim = inicio + 10;
+        if (lista) {
+            lista.innerHTML = termos.slice(inicio, fim).map(t => `
+                <div class="glossario-card-link" style="text-decoration:none;color:inherit;cursor:pointer;" data-termo-id="${t.id}" tabindex="0" aria-label="${t.termo}">
+                    <div class="glossario-card">
+                        <h2>${t.termo}</h2>
+                    </div>
+                </div>
+            `).join('');
+            // Adiciona evento de clique e enter para redirecionar
+            document.querySelectorAll('.glossario-card-link').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-termo-id');
+                    if (id) window.location.href = `/vizualizacaoTermo/${id}`;
+                });
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const id = this.getAttribute('data-termo-id');
+                        if (id) window.location.href = `/vizualizacaoTermo/${id}`;
+                    }
+                });
+            });
+        }
+        // Paginação
+        const totalPaginas = Math.ceil(termos.length/10);
+        if (paginacao) {
+            if (totalPaginas > 1) {
+                let botoes = '';
+                if (paginaAtual > 0) {
+                    botoes += `<button onclick="renderizarTermosGlossario(${paginaAtual-1})" style="padding:0.5rem 1rem;border-radius:6px;border:none;background:#e0e0e0;color:#333;font-weight:600;cursor:pointer;">Anterior</button>`;
+                }
+                for (let i = 0; i < totalPaginas; i++) {
+                    botoes += `<button onclick="renderizarTermosGlossario(${i})" style="padding:0.5rem 1rem;border-radius:6px;border:none;background:${i===paginaAtual?'#388e3c':'#e0e0e0'};color:${i===paginaAtual?'#fff':'#333'};font-weight:600;cursor:pointer;">${i+1}</button>`;
+                }
+                if (paginaAtual < totalPaginas-1) {
+                    botoes += `<button onclick="renderizarTermosGlossario(${paginaAtual+1})" style="padding:0.5rem 1rem;border-radius:6px;border:none;background:#e0e0e0;color:#333;font-weight:600;cursor:pointer;">Próxima</button>`;
+                }
+                paginacao.innerHTML = botoes;
+            } else {
+                paginacao.innerHTML = '';
+            }
+        }
+    }
+    // Modal de contato acessível
+    document.addEventListener('DOMContentLoaded', function() {
+        const openContactBtn = document.getElementById('open-contact');
+        const closeContactBtn = document.getElementById('close-contact');
+        const contactModal = document.getElementById('contact-modal');
+        const contactForm = document.getElementById('modal-contact-form');
+        const contactFeedback = document.getElementById('contact-feedback');
+        if (openContactBtn && closeContactBtn && contactModal && contactForm) {
+            openContactBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                contactModal.style.display = 'flex';
+                contactModal.classList.add('show');
+            });
+            closeContactBtn.addEventListener('click', function() {
+                contactModal.style.display = 'none';
+                contactModal.classList.remove('show');
+                contactFeedback.textContent = '';
+            });
+            contactModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    contactModal.style.display = 'none';
+                    contactModal.classList.remove('show');
+                    contactFeedback.textContent = '';
+                }
+            });
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && contactModal.style.display === 'flex') {
+                    contactModal.classList.remove('show');
+                    contactFeedback.textContent = '';
+                }
+            });
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Aqui você pode implementar o envio do formulário (AJAX ou integração futura)
+                contactFeedback.textContent = 'Mensagem enviada!';
+                contactFeedback.style.color = 'green';
+                setTimeout(function() {
+                    contactModal.style.display = 'none';
+                    contactModal.classList.remove('show');
+                    contactFeedback.textContent = '';
+                }, 1500);
+            });
+        }
+    });
+    </script>
+</body>
+</html>

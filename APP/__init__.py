@@ -1,4 +1,5 @@
 from flask import Flask
+
 from .routes import rotas_principal
 from .extencoes import db, migrate
 from .config import Configuracao

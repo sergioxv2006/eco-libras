@@ -7,56 +7,168 @@
     <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
-    
 </head>
-
+<body>
+    <!-- Header e Navegação Principal -->
     <header role="banner">
         <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
                 <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
-                    Eco Libras
+                Eco Libras
             </div>
             <ul>
                 <li><a href="#home" aria-label="Ir para início">Início</a></li>
-                <li><a href="#courses" aria-label="Ir para cursos">Cursos</a></li>
+                <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário">Glossário</a></li>
                 <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li>
-                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">
-                        Contato
-                    </button>
+                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">Contato</button>
                 </li>
             </ul>
             <form class="search-bar" role="search" aria-label="Pesquisar no site">
-                <input type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar">
+                <input id="navbar-search-input" type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar">
                 <button type="submit" aria-label="Buscar">🔍</button>
             </form>
             <!-- Botão/menu de acessibilidade e admin -->
-            <div class="nav-actions">
-                <button class="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Abrir menu de opções" onclick="toggleMenu()">
-                    ☰
-                </button>
-                <div class="menu-dropdown" id="menuDropdown" aria-label="Menu de opções">
-                    <a href="{{ url_for('principal.pagina_admin') }}" class="admin-link">Admin</a>
-                    <button onclick="changeFontSize(1.1)">A+</button>
-                    <button onclick="changeFontSize(1)">A</button>
-                    <button onclick="changeFontSize(0.9)">A-</button>
+            <li>
+                <button id="open-admin-login" class="btn btn-contact" aria-label="Abrir login administrativo" type="button">Admin</button>
+            </li>
+    <!-- Modal de Login Admin -->
+    <div id="admin-login-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
+        <div class="contact-modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
+            <h2 id="admin-login-title">Login Administrativo</h2>
+            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true" style="width:100%;padding:15px;border:2px solid var(--border-color);border-radius:8px;font-size:1rem;transition:border-color 0.3s ease;">
+                </div>
+                <button type="submit" class="btn" aria-label="Entrar">Entrar</button>
+                <div id="admin-login-feedback" style="margin-top:10px;font-weight:bold;"></div>
+            </form>
+        </div>
+    </div>
+    <script>
+    // Redireciona para vizualizacaoTermo.html ao buscar termo exato na navbar
+    document.addEventListener('DOMContentLoaded', function() {
+        var navbarForm = document.querySelector('form.search-bar[role="search"]');
+        if (navbarForm) {
+            navbarForm.addEventListener('submit', function(e) {
+                var input = document.getElementById('navbar-search-input');
+                var termo = input && input.value.trim();
+                if (termo) {
+                    e.preventDefault();
+                    fetch(`/admin/buscar?termo=${encodeURIComponent(termo)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.length > 0) {
+                                // Busca termo exato (case-insensitive)
+                                var termoObj = data.find(t => t.termo.toLowerCase() === termo.toLowerCase());
+                                if (termoObj) {
+                                    window.location.href = `/vizualizacaoTermo/${termoObj.id}`;
+                                } else {
+                                    // Se não achar exato, vai para o primeiro resultado
+                                    window.location.href = `/vizualizacaoTermo/${data[0].id}`;
+                                }
+                            } else {
+                                alert('Nenhum termo encontrado.');
+                            }
+                        })
+                        .catch(() => alert('Erro ao buscar termo.'));
+                }
+            });
+        }
+    });
+    // Modal de login admin
+    document.addEventListener('DOMContentLoaded', function() {
+        const openBtn = document.getElementById('open-admin-login');
+        const closeBtn = document.getElementById('close-admin-login');
+        const modal = document.getElementById('admin-login-modal');
+        const form = document.getElementById('admin-login-form');
+        const feedback = document.getElementById('admin-login-feedback');
+        if (openBtn && closeBtn && modal && form) {
+            openBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                modal.classList.add('show');
+            });
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                feedback.textContent = '';
+            });
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    modal.style.display = 'none';
+                    modal.classList.remove('show');
+                    feedback.textContent = '';
+                }
+            });
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.style.display = 'none';
+                    modal.classList.remove('show');
+                    feedback.textContent = '';
+                }
+            });
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('admin-username').value.trim();
+                const password = document.getElementById('admin-password').value.trim();
+                feedback.textContent = '';
+                if (!username || !password) {
+                    feedback.textContent = 'Preencha todos os campos.';
+                    feedback.style.color = 'red';
+                    return;
+                }
+                fetch('/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                .then(({ status, body }) => {
+                    if (status === 200 && body.success) {
+                        feedback.textContent = 'Login realizado! Redirecionando...';
+                        feedback.style.color = 'green';
+                        setTimeout(function() {
+                            window.location.href = body.redirect;
+                        }, 1000);
+                    } else {
+                        feedback.textContent = body.message || 'Usuário ou senha inválidos.';
+                        feedback.style.color = 'red';
+                    }
+                })
+                .catch(() => {
+                    feedback.textContent = 'Erro ao tentar logar. Tente novamente.';
+                    feedback.style.color = 'red';
+                });
+            });
+        }
+    });
+    </script>
         </nav>
     </header>
 
+    <!-- Conteúdo Principal -->
     <main role="main" id="main-content">
+        <!-- Seção Hero -->
         <section id="home" class="hero">
             <div class="hero-content">
                 <h1>Descubra o Glossário de Libras para Cursos</h1>
                 <p>Tenha acesso a um glossário exclusivo em Língua Brasileira de Sinais, com os principais termos usados em cursos e no ambiente acadêmico.</p>
-                <a href="#courses" class="btn" aria-label="Ver nossos cursos disponíveis">Ver Glossário</a>
+                <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Ver glossário completo">Ver Glossário</a>
             </div>
         </section>
 
+        <!-- Seção Cursos -->
         <section id="courses" class="courses">
             <h2>Nossos Cursos</h2>
             <div class="course-list">
+                <!-- Curso Básico -->
                 <article class="course-item">
                     <img src="{{ url_for('static', filename='images/sign_language_icon2.jpg') }}" alt="Ícone do curso básico de Libras" class="course-icon">
                     <h3>Libras Básico</h3>
@@ -68,6 +180,7 @@
                     </ul>
                     <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso básico">Saiba Mais</a>
                 </article>
+                <!-- Curso Intermediário -->
                 <article class="course-item">
                     <img src="{{ url_for('static', filename='images/sign_language_icon1.jpg') }}" alt="Ícone do curso intermediário de Libras" class="course-icon">
                     <h3>Libras Intermediário</h3>
@@ -126,13 +239,14 @@
         </div>
     </footer>
 
-    <div id="contact-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" >
-        <div class="contact-modal-content">
-            <button class="close-modal" aria-label="Fechar contato" id="close-contact">&times;</button>
-            <h2>Entre em Contato</h2>
-            <p>Tem dúvidas ou adicionar um nova palavra?</p>
-            <p> Entre em contato conosco!</p>
-            <form role="form" aria-label="Formulário de contato">
+    <!-- Modal de Contato Acessível -->
+    <div id="contact-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="contact-modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar contato" id="close-contact" type="button">&times;</button>
+            <h2 id="contact-modal-title">Entre em Contato</h2>
+            <p>Tem dúvidas ou deseja adicionar uma nova palavra?</p>
+            <p>Entre em contato conosco!</p>
+            <form id="modal-contact-form" role="form" aria-labelledby="contact-modal-title" autocomplete="off" novalidate>
                 <div class="form-group">
                     <label for="name">Nome:</label>
                     <input type="text" id="name" name="name" placeholder="Seu Nome" required aria-required="true" aria-describedby="name-help">
@@ -149,6 +263,7 @@
                     <small id="message-help">Descreva sua dúvida ou comentário</small>
                 </div>
                 <button type="submit" class="btn" aria-label="Enviar mensagem">Enviar</button>
+                <div id="contact-feedback" style="margin-top:10px;font-weight:bold;"></div>
             </form>
         </div>
     </div>
@@ -174,14 +289,7 @@
             document.documentElement.style.fontSize = (scale * 100) + '%';
         }
 
-        // Abrir e fechar modal de contato
-        document.getElementById('open-contact').addEventListener('click', function() {
-            document.getElementById('contact-modal').style.display = 'block';
-        });
-
-        document.getElementById('close-contact').addEventListener('click', function() {
-            document.getElementById('contact-modal').style.display = 'none';
-        });
+        // ...existing code...
     </script>
 </body>
 </html>

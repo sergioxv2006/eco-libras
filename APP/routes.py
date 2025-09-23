@@ -1,10 +1,17 @@
 import os
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
 from werkzeug.utils import secure_filename
 from .models import Termo, Curso
 from .extencoes import db
+import os
+
 
 rotas_principal = Blueprint("principal", __name__)
+
+# Página do glossário
+@rotas_principal.route("/glossario")
+def pagina_glossario():
+    return render_template("glossario.html")
 
 # Página inicial
 @rotas_principal.route("/")
@@ -16,9 +23,16 @@ def pagina_inicial():
 def pagina_acessibilidade():
     return render_template("acessibilidade.html")
 
-# Admin: listar termos, filtrar por curso
+
+# Proteção de rota admin
+def admin_logado():
+    return session.get('admin_logado') is True
+
 @rotas_principal.route("/admin", methods=["GET"])
 def pagina_admin():
+    if not admin_logado():
+        flash("Faça login para acessar a área administrativa.", "warning")
+        return redirect(url_for("principal.pagina_inicial"))
     cursos = Curso.query.order_by(Curso.nome).all()
     curso_id = request.args.get('curso_id', type=int)
     if curso_id:
@@ -26,6 +40,26 @@ def pagina_admin():
     else:
         glossario = Termo.query.order_by(Termo.id.desc()).all()
     return render_template("admin.html", glossario=glossario, cursos=cursos, curso_id=curso_id)
+
+# Login admin via AJAX
+@rotas_principal.route("/admin/login", methods=["POST"])
+def admin_login():
+    data = request.get_json() or request.form
+    username = data.get("username")
+    password = data.get("password")
+    admin_user = os.environ.get("ADMIN_USER", "admin")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "admin")
+    if username == admin_user and password == admin_password:
+        session['admin_logado'] = True
+        return jsonify({"success": True, "redirect": url_for("principal.pagina_admin")})
+    return jsonify({"success": False, "message": "Usuário ou senha inválidos."}), 401
+
+# Logout admin
+@rotas_principal.route("/admin/logout")
+def admin_logout():
+    session.pop('admin_logado', None)
+    flash("Logout realizado com sucesso!", "success")
+    return redirect(url_for("principal.pagina_inicial"))
 
 # Adicionar novo termo
 @rotas_principal.route("/admin/adicionar", methods=["POST"])
@@ -141,12 +175,18 @@ def remover_curso():
 @rotas_principal.route("/admin/buscar", methods=["GET"])
 def buscar_termos():
     termo = request.args.get("termo", "").strip().lower()
-    curso_id = request.args.get("curso_id", type=int)
+    curso_id = request.args.get("curso_id", None)
     query = Termo.query
     if termo:
         query = query.filter(Termo.nome_termo.ilike(f"%{termo}%"))
-    if curso_id:
-        query = query.filter(Termo.curso_id == curso_id)
+    # Se curso_id não for informado, vazio, null, undefined ou zero (string ou int), retorna todos os termos
+    if curso_id not in [None, '', 'null', 'undefined', 0, '0', False]:
+        try:
+            curso_id_int = int(curso_id)
+            if curso_id_int != 0:
+                query = query.filter(Termo.curso_id == curso_id_int)
+        except Exception:
+            pass
     resultados = query.order_by(Termo.id.desc()).all()
     termos_json = [
         {
@@ -179,3 +219,4 @@ def buscar_cursos():
 def video(filename):
      pasta_videos = os.path.join('APP', 'static', 'videos')
      return send_from_directory(pasta_videos, filename)
+

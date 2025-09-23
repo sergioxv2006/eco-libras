@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização do Termo | Eco Libras</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var navbarForm = document.querySelector('form.search-bar[role="search"]');
+        if (navbarForm) {
+            navbarForm.addEventListener('submit', function(e) {
+                var input = navbarForm.querySelector('input[type="search"]');
+                var termo = input && input.value.trim();
+                if (termo) {
+                    e.preventDefault();
+                    fetch(`/admin/buscar?termo=${encodeURIComponent(termo)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.length > 0) {
+                                var termoObj = data.find(t => t.termo.toLowerCase() === termo.toLowerCase());
+                                if (termoObj) {
+                                    window.location.href = `/vizualizacaoTermo/${termoObj.id}`;
+                                } else {
+                                    window.location.href = `/vizualizacaoTermo/${data[0].id}`;
+                                }
+                            } else {
+                                alert('Nenhum termo encontrado.');
+                            }
+                        })
+                        .catch(() => alert('Erro ao buscar termo.'));
+                }
+            });
+        }
+    });
+    </script>
+</head>
+<body>
+    <header role="banner">
+        <nav role="navigation" aria-label="Menu principal">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
+                Eco Libras
+            </div>
+            <ul>
+                <li><a href="{{ url_for('principal.pagina_inicial') }}" aria-label="Ir para início">Início</a></li>
+                <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário">Glossário</a></li>
+                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li>
+                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">Contato</button>
+                </li>
+            </ul>
+            <form class="search-bar" role="search" aria-label="Pesquisar no site" style="gap:8px;max-width:400px;margin:0 1rem;display:flex;align-items:center;">
+                <input type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar" style="background:#fff;color:#222;border:1.5px solid var(--border-color,#ccc);border-radius:8px;font-size:1rem;padding:12px 16px;outline:none;transition:border-color 0.2s;width:220px;max-width:100%;">
+                <button type="submit" aria-label="Buscar" style="margin-left:8px;padding:12px 24px;border-radius:8px;background:var(--primary-color,#2e7d32);color:#fff;font-weight:bold;font-size:1rem;border:none;cursor:pointer;transition:background 0.2s;">🔍</button>
+            </form>
+            <!-- Botão/menu de acessibilidade e admin -->
+            <li>
+                <button id="open-admin-login" class="btn btn-contact" aria-label="Abrir login administrativo" type="button">Admin</button>
+            </li>
+        </nav>
+    </header>
+    <main role="main" id="main-content" style="margin-top:120px;">
+        <section class="termo-detalhe-section" style="display:flex;justify-content:center;align-items:center;min-height:60vh;">
+            <div class="termo-detalhe-card" style="background:linear-gradient(90deg,#e8f5e9 0%,#f1f8e9 100%);box-shadow:0 4px 18px rgba(46,125,50,0.10),0 1.5px 4px rgba(0,0,0,0.04);border-radius:16px;padding:2.5rem 2rem;max-width:480px;width:100%;margin:2rem auto;display:flex;flex-direction:column;align-items:center;">
+                <h1 style="color:#1b5e20;font-size:2.2rem;font-weight:800;margin-bottom:1.2rem;text-align:center;word-break:break-word;">{{ termo.termo }}</h1>
+                <p style="font-size:1.1rem;color:#333;margin-bottom:1.2rem;text-align:center;line-height:1.6;"><strong>Descrição:</strong> {{ termo.descricao or 'Sem descrição.' }}</p>
+                <p style="font-size:1rem;color:#388e3c;margin-bottom:1.2rem;text-align:center;"><strong>Curso:</strong> {{ termo.curso_nome or 'Não informado' }}</p>
+                {% if termo.video %}
+                <div style="margin: 1.5rem 0;width:100%;display:flex;justify-content:center;">
+                    <video src="/videos/{{ termo.video }}" controls style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(46,125,50,0.10);"></video>
+                </div>
+                {% endif %}
+                <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Voltar ao glossário" style="margin-top:1.5rem;min-width:180px;">Voltar ao Glossário</a>
+            </div>
+        </section>
+    </main>
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+            <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        </div>
+    </footer>
+</body>
+</html>
