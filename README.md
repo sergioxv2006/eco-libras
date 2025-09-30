@@ -1,6 +1,50 @@
-# Site do Curso de Libras Audiovisual
+# Eco-Libras – Site do Curso de Libras Audiovisual
 
-Este é um site desenvolvido para um curso de Libras audiovisual com foco em acessibilidade, utilizando design minimalista e paleta de cores azul e branco.
+Aplicação web em Flask para um glossário de termos com foco em acessibilidade. Este README explica como rodar localmente (Windows), como usar Docker e como publicar o site para acesso público.
+
+## Como rodar localmente (Windows / PowerShell)
+
+Pré-requisitos:
+- Python 3.11+ instalado (recomendado)
+- Git (opcional)
+
+1) Clonar o repositório e entrar na pasta do projeto
+
+```powershell
+git clone https://github.com/sergioxv2006/eco-libras.git
+cd eco-libras
+```
+
+2) Criar e ativar um ambiente virtual
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+3) Instalar dependências
+
+```powershell
+python -m pip install -U pip
+pip install -r requirements.txt
+```
+
+4) Configurar variáveis de ambiente
+
+```powershell
+Copy-Item .env.example .env
+# Edite o arquivo .env se quiser trocar SECRET_KEY, ADMIN_USER/PASSWORD ou o caminho do banco
+```
+
+Por padrão, o projeto usa SQLite em `instance/data_bank.db`. A pasta `instance/` já existe no repo.
+
+5) Iniciar a aplicação
+
+```powershell
+python run.py
+```
+
+Abra http://localhost:5000 no navegador. Área admin em http://localhost:5000/admin (credenciais no `.env`). Na primeira execução, as tabelas são criadas automaticamente.
 
 ## Características do Projeto
 

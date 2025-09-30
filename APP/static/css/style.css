@@ -7,7 +7,7 @@
     box-shadow: 0 4px 18px rgba(46,125,50,0.10), 0 1.5px 4px rgba(0,0,0,0.04);
     padding: 1.7rem 1.3rem;
     margin-bottom: 1.7rem;
-    transition: box-shadow 0.22s, transform 0.18s, border 0.18s;
+    transition: box-shadow 0.22s;
     cursor: pointer;
     outline: none;
     border: 2px solid transparent;
@@ -17,7 +17,6 @@
 }
 .glossario-card:focus, .glossario-card:hover {
     box-shadow: 0 8px 28px rgba(46,125,50,0.18), 0 2px 8px rgba(0,0,0,0.08);
-    transform: translateY(-3px) scale(1.025);
     border: 2px solid #388e3c;
     background: linear-gradient(90deg, #c8e6c9 0%, #e8f5e9 100%);
 }
@@ -30,6 +29,7 @@
     text-shadow: 0 1px 0 #fff, 0 2px 6px rgba(46,125,50,0.08);
     flex: 1;
 }
+
 /* =============================
     style.css
     CSS principal do site Eco Libras
@@ -141,9 +141,36 @@ nav .logo {
 }
 
 .logo-icon {
-    width: 80px;
+    width: 60px;
     height: 60px;
-    margin-right: 10px;
+    margin-right: 12px;
+    border-radius: 8px;
+    border: 2px solid #4CAF50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+/* Efeito hover na logo */
+.logo-icon:hover {
+    transform: scale(1.15) rotate(5deg); /* Aumenta e rotaciona ligeiramente */
+    box-shadow: 
+        0 8px 20px rgba(76, 175, 80, 0.25), /* Sombra verde mais intensa */
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        0 0 0 2px rgba(76, 175, 80, 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.4); /* Mais luz interna */
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(45deg, #45a049, #66BB6A, #4CAF50, #81C784) border-box; /* Gradiente animado */
+    animation: logoPulse 2s infinite ease-in-out; /* Animação de pulso contínua */
+}
+
+.logo-icon:hover::before {
+    opacity: 1; /* Mostra o brilho no hover */
+}
+
+/* Efeito de foco para acessibilidade */
+.logo-icon:focus {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
 }
 
 header nav ul {
@@ -714,6 +741,24 @@ footer {
 }
 
 /* Responsividade */
+/* Tablets */
+@media (max-width: 768px) and (min-width: 481px) {
+    .logo-icon {
+        width: 60px;
+        height: 50px;
+        border: 2px solid transparent;
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(45deg, #4CAF50, #81C784) border-box;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5px;
+    }
+    
+    .logo-icon:hover {
+        transform: scale(1.08) rotate(3deg);
+        animation: logoPulse 2.5s infinite ease-in-out;
+    }
+}
+
 @media (max-width: 768px) {
     header nav {
         flex-direction: column;
@@ -789,8 +834,20 @@ footer {
     }
     
     .logo-icon {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%; /* Mantém circular em mobile */
+        border: 2px solid transparent; /* Borda transparente para gradiente */
+        background: linear-gradient(white, white) padding-box,
+                    linear-gradient(45deg, #4CAF50, #66BB6A) border-box; /* Gradiente simplificado */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra menor em mobile */
+        padding: 1px; /* Padding menor em mobile */
+    }
+    
+    /* Efeito hover reduzido para mobile */
+    .logo-icon:hover {
+        transform: scale(1.05) rotate(2deg); /* Efeito mais sutil em mobile */
+        animation: none; /* Remove animação em mobile para economizar bateria */
     }
     
     h1 {
