@@ -199,7 +199,7 @@
     <script>
     // Carregar cursos para o select
     function carregarCursos() {
-        fetch('/admin/buscar_cursos')
+        return fetch('/admin/buscar_cursos')
             .then(res => res.json())
             .then(cursos => {
                 const select = document.getElementById('curso-select');
@@ -211,7 +211,18 @@
                 });
             });
     }
-    carregarCursos();
+    // Carrega cursos, aplica filtro da URL (curso_id) e então busca termos
+    (function initGlossario() {
+        const params = new URLSearchParams(window.location.search);
+        const cursoIdParam = params.get('curso_id');
+        carregarCursos().then(() => {
+            if (cursoIdParam) {
+                const select = document.getElementById('curso-select');
+                if (select) select.value = cursoIdParam;
+            }
+            buscarTermos();
+        });
+    })();
 
     document.getElementById('search-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -225,10 +236,7 @@
         buscarTermos();
     });
 
-    // Exibir todos os termos ao carregar a página
-    document.addEventListener('DOMContentLoaded', function() {
-        buscarTermos();
-    });
+    // Busca inicial agora é acionada no initGlossario acima
 
     function buscarTermos() {
         const termo = document.getElementById('search-input').value.trim();
@@ -258,11 +266,7 @@
         const paginaAtual = window.paginaGlossario || 0;
         if (!termos.length) {
             if (lista) {
-                if (!termo && !cursoId) {
-                    lista.innerHTML = '<p style="text-align:center;color:#888;">Digite um termo ou selecione um curso para pesquisar no glossário.</p>';
-                } else {
-                    lista.innerHTML = '<p style="text-align:center;color:#888;">Nenhum termo encontrado.</p>';
-                }
+                lista.innerHTML = '<p style="text-align:center;color:#888;">Nenhum termo encontrado.</p>';
             }
             if (paginacao) paginacao.innerHTML = '';
             return;

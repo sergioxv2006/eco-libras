@@ -291,6 +291,52 @@
 
         // ...existing code...
     </script>
+    
+    <!-- JavaScript para efeitos especiais da logo -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logo = document.querySelector('.logo-icon');
+        
+        if (logo) {
+            // Adiciona um efeito especial ao clicar na logo
+            logo.addEventListener('click', function() {
+                // Adiciona uma classe temporária para rotação completa
+                logo.style.animation = 'logoRotate 1s ease-in-out';
+                
+                // Remove a animação após completar
+                setTimeout(() => {
+                    logo.style.animation = 'logoEntrance 1.2s ease-out';
+                }, 1000);
+            });
+            
+            // Efeito de "respiração" suave quando a página fica idle
+            let idleTimer;
+            let isIdle = false;
+            
+            function resetIdleTimer() {
+                clearTimeout(idleTimer);
+                if (isIdle) {
+                    logo.style.animation = 'logoEntrance 1.2s ease-out';
+                    isIdle = false;
+                }
+                
+                idleTimer = setTimeout(() => {
+                    if (!logo.matches(':hover')) {
+                        logo.style.animation = 'logoPulse 3s infinite ease-in-out';
+                        isIdle = true;
+                    }
+                }, 5000); // 5 segundos de inatividade
+            }
+            
+            // Reset timer on user activity
+            ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, resetIdleTimer, true);
+            });
+            
+            resetIdleTimer();
+        }
+    });
+    </script>
 </body>
 </html>
 

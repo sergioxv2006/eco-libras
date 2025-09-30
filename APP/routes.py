@@ -220,3 +220,54 @@ def video(filename):
      pasta_videos = os.path.join('APP', 'static', 'videos')
      return send_from_directory(pasta_videos, filename)
 
+# Página de visualização do termo (detalhe)
+@rotas_principal.route('/vizualizacaoTermo/<int:termo_id>')
+def visualizar_termo(termo_id):
+    termo = Termo.query.get(termo_id)
+    if not termo:
+        flash('Termo não encontrado.', 'warning')
+        return redirect(url_for('principal.pagina_glossario'))
+    curso_nome = termo.curso.nome if getattr(termo, 'curso', None) else None
+    termo_dict = {
+        'id': termo.id,
+        'termo': termo.nome_termo,
+        'descricao': termo.descricao,
+        'video': termo.video,
+        'curso_nome': curso_nome
+    }
+    return render_template('vizualizacaoTermo.html', termo=termo_dict)
+
+# Rotas amigáveis por curso (exemplos solicitados)
+@rotas_principal.route('/cursos/psicologia')
+def termos_psicologia():
+    curso = Curso.query.filter(Curso.nome.ilike('%psicologia%')).first()
+    if not curso:
+        flash('Curso Psicologia não encontrado.', 'warning')
+        return redirect(url_for('principal.pagina_glossario'))
+    # Redireciona para o glossário com filtro por curso
+    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
+
+@rotas_principal.route('/cursos/ciencia-da-computacao')
+def termos_ciencia_da_computacao():
+    # Considera variações com/sem acento
+    curso = (Curso.query
+        .filter(
+            (Curso.nome.ilike('%ciência da computação%')) |
+            (Curso.nome.ilike('%ciencia da computacao%'))
+        )
+        .first()
+    )
+    if not curso:
+        flash('Curso Ciência da Computação não encontrado.', 'warning')
+        return redirect(url_for('principal.pagina_glossario'))
+    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
+
+# Opcional: rota genérica por id de curso
+@rotas_principal.route('/cursos/<int:curso_id>')
+def termos_por_curso_id(curso_id):
+    curso = Curso.query.get(curso_id)
+    if not curso:
+        flash('Curso não encontrado.', 'warning')
+        return redirect(url_for('principal.pagina_glossario'))
+    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
+
