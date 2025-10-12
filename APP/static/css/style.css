@@ -4,7 +4,7 @@
 .glossario-card {
     background: linear-gradient(90deg, #e8f5e9 0%, #f1f8e9 100%);
     border-radius: 14px;
-    box-shadow: 0 4px 18px rgba(46,125,50,0.10), 0 1.5px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 18px rgba(46, 125, 50, 0.1), 0 1.5px 4px rgba(0, 0, 0, 0.04);
     padding: 1.7rem 1.3rem;
     margin-bottom: 1.7rem;
     transition: box-shadow 0.22s;
@@ -15,8 +15,8 @@
     align-items: center;
     gap: 1rem;
 }
-.glossario-card:focus, .glossario-card:hover {
-    box-shadow: 0 8px 28px rgba(46,125,50,0.18), 0 2px 8px rgba(0,0,0,0.08);
+.glossario-card:hover {
+    box-shadow: 0 8px 28px rgba(46, 125, 50, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
     border: 2px solid #388e3c;
     background: linear-gradient(90deg, #c8e6c9 0%, #e8f5e9 100%);
 }
@@ -26,7 +26,7 @@
     margin: 0;
     font-weight: 800;
     letter-spacing: 0.7px;
-    text-shadow: 0 1px 0 #fff, 0 2px 6px rgba(46,125,50,0.08);
+    text-shadow: 0 1px 0 #fff, 0 2px 6px rgba(46, 125, 50, 0.08);
     flex: 1;
 }
 
@@ -498,7 +498,15 @@ p {
 }
 
 .hero-content h1 {
-    color: var(--primary-color);
+    font-size: 2.5rem;
+    color: #2e7d32;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: #555;
 }
 
 .hero-image {
@@ -828,6 +836,7 @@ footer {
     }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
     .logo {
         font-size: 1.4rem;
@@ -868,27 +877,106 @@ footer {
     }
 }
 
-/* Acessibilidade */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+/* Estilos para o título do glossário */
+.hero-content h1 {
+    font-size: 2.5rem;
+    color: #2e7d32;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.hero-content p {
+    font-size: 1.2rem;
+    color: #555;
 }
 
-/* Alto contraste */
-@media (prefers-contrast: high) {
-    :root {
-        --primary-color: #0056b3;
-        --text-color: #000000;
-        --border-color: #000000;
-    }
+/* Estilos para o formulário de busca */
+#search-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+#search-input {
+    flex: 2;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color, #ccc);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+#search-input:focus {
+    border-color: #2e7d32;
+}
+#curso-select {
+    flex: 1;
+    padding: 12px 10px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border-color, #ccc);
+    background: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+#curso-select:focus {
+    border-color: #2e7d32;
+}
+button[type="submit"] {
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: var(--primary-color, #2e7d32);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+button[type="submit"]:hover {
+    background: #1b5e20;
 }
 
-/* Foco visível melhorado */
-*:focus {
-    outline: 3px solid var(--primary-color);
-    outline-offset: 2px;
+/* Estilos para os cards do glossário */
+.glossario-card {
+    background: linear-gradient(90deg, #e8f5e9 0%, #f1f8e9 100%);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(46, 125, 50, 0.1), 0 1.5px 4px rgba(0, 0, 0, 0.04);
+    padding: 1.7rem 1.3rem;
+    margin-bottom: 1.7rem;
+    transition: box-shadow 0.22s;
+    cursor: pointer;
+    outline: none;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.glossario-card:hover {
+    box-shadow: 0 8px 28px rgba(46, 125, 50, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid #388e3c;
+    background: linear-gradient(90deg, #c8e6c9 0%, #e8f5e9 100%);
+}
+.glossario-card h2 {
+    font-size: 1.45rem;
+    color: #1b5e20;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-shadow: 0 1px 0 #fff, 0 2px 6px rgba(46, 125, 50, 0.08);
+    flex: 1;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #search-form {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .glossario-card {
+        padding: 1.2rem;
+    }
+    .glossario-card h2 {
+        font-size: 1.2rem;
+    }
 }
 

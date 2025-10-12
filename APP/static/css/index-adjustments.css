@@ -1,0 +1,205 @@
+/* Estilos adicionais para a página inicial */
+
+/* 1. Centralizar o botão "Ver Glossário" */
+.hero .btn-search {
+    display: block;
+    margin: 2rem auto 0;
+    max-width: 200px;
+    text-align: center;
+}
+
+/* 2. Mudar cores do título e subtítulo na tela inicial */
+.hero-content h1 {
+    color: #ffffff; /* Título em branco para maior contraste com o fundo */
+    font-size: 2.8rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3); /* Sombra mais pronunciada para melhorar legibilidade */
+    margin-bottom: 1.5rem;
+}
+
+.hero-content .subtitle {
+    color: #78909c; /* Cinza azulado claro */
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+/* 3. Atualizar estilo dos cartões de cursos */
+.course-item {
+    background: #ffffff; /* Fundo branco para melhor visibilidade */
+    border: none;
+    border-radius: 20px; /* Cantos mais arredondados */
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.course-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1.5rem;
+    border-radius: 20px; /* Cantos arredondados para os ícones */
+    border: none;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.course-item h3 {
+    color: #0d5c63; /* Azul petróleo para os títulos - matching com o título principal */
+    margin-bottom: 1rem;
+}
+
+/* Estilização suave para os botões "Saiba Mais" */
+.btn-secondary {
+    background: #e3f2fd; /* Fundo azul claro */
+    color: #0d5c63; /* Texto azul petróleo */
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 1rem;
+    box-shadow: 0 3px 10px rgba(13, 92, 99, 0.1);
+}
+
+.btn-secondary:hover {
+    background: #bbdefb; /* Azul um pouco mais escuro no hover */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(13, 92, 99, 0.2);
+}
+
+.course-features {
+    text-align: left;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+}
+
+.course-features li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.course-features li::before {
+    content: "✓";
+    color: #0d5c63; /* Azul petróleo para manter consistência */
+    position: absolute;
+    left: -1rem;
+}
+
+/* 4. Remover borda branca acima da imagem hero */
+.hero {
+    position: relative;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+    box-shadow: none;
+}
+
+/* 5. Estilização da seção "Sobre Nós" */
+.about-us {
+    background: #ffffff; /* Fundo branco */
+    border-radius: 20px;
+    margin: 3rem auto;
+    max-width: 1200px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.about-us h2 {
+    color: #0d5c63; /* Azul petróleo para manter consistência */
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.about-us h2:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(to right, #0d5c63, transparent);
+}
+
+.feature {
+    background: #f5f9fa; /* Fundo muito suave */
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(13, 92, 99, 0.1);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px; /* Cantos arredondados para os ícones */
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 15px;
+}
+
+.feature h3 {
+    color: #0d5c63; /* Azul petróleo para manter consistência */
+    margin-bottom: 0.5rem;
+}
+
+/* Ajustes na modal de contato */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    padding: 2rem;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.feedback-message {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: rgba(46, 125, 50, 0.1);
+    text-align: center;
+}

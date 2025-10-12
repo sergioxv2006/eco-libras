@@ -6,6 +6,12 @@
     <title>Visualização do Termo | Eco Libras</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    <!-- Adicionando novos estilos modernos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vizualizacao-termo.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var navbarForm = document.querySelector('form.search-bar[role="search"]');
@@ -37,51 +43,181 @@
     </script>
 </head>
 <body>
-    <header role="banner">
+    <!-- Header e Navegação Principal -->
+    <header role="banner" class="glossary-header">
         <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
                 <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
-                Eco Libras
+                <span class="logo-text">Eco Libras</span>
             </div>
-            <ul>
+            <ul class="nav-links">
                 <li><a href="{{ url_for('principal.pagina_inicial') }}" aria-label="Ir para início">Início</a></li>
-                <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário">Glossário</a></li>
+                <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário" class="active">Glossário</a></li>
                 <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li>
-                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">Contato</button>
+                    <button id="open-contact" class="btn-nav" aria-label="Abrir menu de contato" type="button">
+                        <i class="fas fa-envelope"></i> Contato
+                    </button>
                 </li>
             </ul>
-            <form class="search-bar" role="search" aria-label="Pesquisar no site" style="gap:8px;max-width:400px;margin:0 1rem;display:flex;align-items:center;">
-                <input type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar" style="background:#fff;color:#222;border:1.5px solid var(--border-color,#ccc);border-radius:8px;font-size:1rem;padding:12px 16px;outline:none;transition:border-color 0.2s;width:220px;max-width:100%;">
-                <button type="submit" aria-label="Buscar" style="margin-left:8px;padding:12px 24px;border-radius:8px;background:var(--primary-color,#2e7d32);color:#fff;font-weight:bold;font-size:1rem;border:none;cursor:pointer;transition:background 0.2s;">🔍</button>
-            </form>
-            <!-- Botão/menu de acessibilidade e admin -->
-            <li>
-                <button id="open-admin-login" class="btn btn-contact" aria-label="Abrir login administrativo" type="button">Admin</button>
-            </li>
+            <div class="right-nav">
+                <form class="search-bar" role="search" aria-label="Pesquisar no site">
+                    <input type="search" placeholder="Pesquisar no site..." aria-label="Pesquisar">
+                    <button type="submit" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                </form>
+                <button id="open-admin-login" class="btn-nav" aria-label="Abrir login administrativo" type="button">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+                <button class="mobile-menu-btn" aria-label="Menu mobile">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
         </nav>
     </header>
-    <main role="main" id="main-content" style="margin-top:120px;">
-        <section class="termo-detalhe-section" style="display:flex;justify-content:center;align-items:center;min-height:60vh;">
-            <div class="termo-detalhe-card" style="background:linear-gradient(90deg,#e8f5e9 0%,#f1f8e9 100%);box-shadow:0 4px 18px rgba(46,125,50,0.10),0 1.5px 4px rgba(0,0,0,0.04);border-radius:16px;padding:2.5rem 2rem;max-width:480px;width:100%;margin:2rem auto;display:flex;flex-direction:column;align-items:center;">
-                <h1 style="color:#1b5e20;font-size:2.2rem;font-weight:800;margin-bottom:1.2rem;text-align:center;word-break:break-word;">{{ termo.termo }}</h1>
-                <p style="font-size:1.1rem;color:#333;margin-bottom:1.2rem;text-align:center;line-height:1.6;"><strong>Descrição:</strong> {{ termo.descricao or 'Sem descrição.' }}</p>
-                <p style="font-size:1rem;color:#388e3c;margin-bottom:1.2rem;text-align:center;"><strong>Curso:</strong> {{ termo.curso_nome or 'Não informado' }}</p>
+    <main role="main" id="main-content">
+        <section class="termo-detalhe-section">
+            <div class="termo-detalhe-card">
+                <h1>{{ termo.termo }}</h1>
+                <p><strong>Descrição:</strong> {{ termo.descricao or 'Sem descrição.' }}</p>
+                <p class="curso"><strong>Curso:</strong> {{ termo.curso_nome or 'Não informado' }}</p>
                 {% if termo.video %}
-                <div style="margin: 1.5rem 0;width:100%;display:flex;justify-content:center;">
-                    <video src="/videos/{{ termo.video }}" controls style="max-width:100%;border-radius:10px;box-shadow:0 2px 8px rgba(46,125,50,0.10);"></video>
+                <div class="video-container">
+                    <video src="/videos/{{ termo.video }}" controls></video>
                 </div>
                 {% endif %}
-                <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Voltar ao glossário" style="margin-top:1.5rem;min-width:180px;">Voltar ao Glossário</a>
+                <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Voltar ao glossário">Voltar ao Glossário</a>
             </div>
         </section>
     </main>
     <footer role="contentinfo">
-        <div class="footer-content">
-            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
-            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
-            <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Logo Eco Libras" class="footer-logo-img">
+                    <span>Eco Libras</span>
+                </div>
+                <div class="footer-links">
+                    <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+                    <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+                    <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="Siga-nos no Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Siga-nos no Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Siga-nos no YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
+    <!-- Modal de Contato Acessível -->
+    <div id="contact-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar contato" id="close-contact" type="button">&times;</button>
+            <h2 id="contact-modal-title">Entre em Contato</h2>
+            <p>Tem dúvidas ou deseja adicionar uma nova palavra?</p>
+            <p>Entre em contato conosco!</p>
+            <form id="modal-contact-form" role="form" aria-labelledby="contact-modal-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" placeholder="Seu Nome" required aria-required="true" aria-describedby="name-help">
+                    <small id="name-help">Como gostaria de ser chamado</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="email@exemplo.com" required aria-required="true" aria-describedby="email-help">
+                    <small id="email-help">Usaremos para responder sua mensagem</small>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensagem:</label>
+                    <textarea id="message" name="message" placeholder="Sua Mensagem" required aria-required="true" aria-describedby="message-help"></textarea>
+                    <small id="message-help">Descreva sua dúvida ou comentário</small>
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Enviar mensagem">Enviar</button>
+                <div id="contact-feedback" class="feedback-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Login Admin -->
+    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
+            <h2 id="login-modal-title">Login Administrativo</h2>
+            <form id="modal-login-form" role="form" aria-labelledby="login-modal-title" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" name="username" placeholder="Nome de usuário" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" placeholder="Sua senha" required aria-required="true">
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Fazer login">Entrar</button>
+                <div id="login-feedback" class="feedback-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modal-contact.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Admin modal
+            const adminBtn = document.getElementById('open-admin-login');
+            const closeAdmin = document.getElementById('close-admin-login');
+            const adminModal = document.getElementById('admin-login-modal');
+            const loginForm = document.getElementById('modal-login-form');
+            const loginFeedback = document.getElementById('login-feedback');
+            
+            if (adminBtn && closeAdmin && adminModal) {
+                adminBtn.addEventListener('click', function() {
+                    adminModal.style.display = 'flex';
+                    setTimeout(() => {
+                        adminModal.querySelector('.modal-content').style.opacity = '1';
+                        adminModal.querySelector('.modal-content').style.transform = 'translateY(0)';
+                    }, 10);
+                });
+                
+                closeAdmin.addEventListener('click', function() {
+                    adminModal.querySelector('.modal-content').style.opacity = '0';
+                    adminModal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        adminModal.style.display = 'none';
+                    }, 300);
+                });
+                
+                // Fechar ao clicar fora
+                adminModal.addEventListener('click', function(e) {
+                    if (e.target === adminModal) {
+                        closeAdmin.click();
+                    }
+                });
+            }
+            
+            // Menu mobile
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.classList.toggle('active');
+                });
+            }
+            
+            // Efeito de scroll na navbar
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

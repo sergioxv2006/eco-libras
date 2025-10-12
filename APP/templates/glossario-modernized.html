@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
     <!-- Adicionando novos estilos modernos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -47,6 +46,7 @@
             </div>
         </nav>
     </header>
+
     <!-- Modal de Login Admin -->
     <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
         <div class="modal-content" role="document">
@@ -66,75 +66,7 @@
             </form>
         </div>
     </div>
-    <script>
-    // Modal de login admin
-    document.addEventListener('DOMContentLoaded', function() {
-        const openBtn = document.getElementById('open-admin-login');
-        const closeBtn = document.getElementById('close-admin-login');
-        const modal = document.getElementById('admin-login-modal');
-        const form = document.getElementById('admin-login-form');
-        const feedback = document.getElementById('admin-login-feedback');
-        if (openBtn && closeBtn && modal && form) {
-            openBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                modal.style.display = 'flex';
-                modal.classList.add('show');
-            });
-            closeBtn.addEventListener('click', function() {
-                modal.style.display = 'none';
-                modal.classList.remove('show');
-                feedback.textContent = '';
-            });
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    modal.style.display = 'none';
-                    modal.classList.remove('show');
-                    feedback.textContent = '';
-                }
-            });
-            window.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    modal.style.display = 'none';
-                    modal.classList.remove('show');
-                    feedback.textContent = '';
-                }
-            });
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const username = document.getElementById('admin-username').value.trim();
-                const password = document.getElementById('admin-password').value.trim();
-                feedback.textContent = '';
-                if (!username || !password) {
-                    feedback.textContent = 'Preencha todos os campos.';
-                    feedback.style.color = 'red';
-                    return;
-                }
-                fetch('/admin/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                })
-                .then(res => res.json().then(data => ({ status: res.status, body: data })))
-                .then(({ status, body }) => {
-                    if (status === 200 && body.success) {
-                        feedback.textContent = 'Login realizado! Redirecionando...';
-                        feedback.style.color = 'green';
-                        setTimeout(function() {
-                            window.location.href = body.redirect;
-                        }, 1000);
-                    } else {
-                        feedback.textContent = body.message || 'Usuário ou senha inválidos.';
-                        feedback.style.color = 'red';
-                    }
-                })
-                .catch(() => {
-                    feedback.textContent = 'Erro ao tentar logar. Tente novamente.';
-                    feedback.style.color = 'red';
-                });
-            });
-        }
-    });
-    </script>
+
     <main role="main" id="main-content">
         <section id="glossario" class="glossario-section">
             <div class="container">
@@ -176,6 +108,7 @@
             </div>
         </section>
     </main>
+
     <footer role="contentinfo">
         <div class="container">
             <div class="footer-content">
@@ -225,6 +158,7 @@
             </form>
         </div>
     </div>
+
     <script>
     // Carregar cursos para o select
     function carregarCursos() {
@@ -240,6 +174,7 @@
                 });
             });
     }
+
     // Carrega cursos, aplica filtro da URL (curso_id) e então busca termos
     (function initGlossario() {
         const params = new URLSearchParams(window.location.search);
@@ -257,15 +192,10 @@
         e.preventDefault();
         buscarTermos();
     });
-    document.getElementById('search-input').addEventListener('input', function(e) {
-        // Removido: mensagem só deve aparecer quando não houver itens após busca
-    });
 
     document.getElementById('curso-select').addEventListener('change', function() {
         buscarTermos();
     });
-
-    // Busca inicial agora é acionada no initGlossario acima
 
     function buscarTermos() {
         const termo = document.getElementById('search-input').value.trim();
@@ -320,6 +250,7 @@
                     </div>
                 </div>
             `).join('');
+            
             // Adiciona evento de clique e enter para redirecionar
             document.querySelectorAll('.glossario-card-link').forEach(function(card) {
                 card.addEventListener('click', function() {
@@ -334,6 +265,7 @@
                 });
             });
         }
+        
         // Paginação
         const totalPaginas = Math.ceil(termos.length/10);
         if (paginacao) {
@@ -360,6 +292,7 @@
             }
         }
     }
+
     // Modal de contato acessível
     document.addEventListener('DOMContentLoaded', function() {
         const openContactBtn = document.getElementById('open-contact');
@@ -367,6 +300,7 @@
         const contactModal = document.getElementById('contact-modal');
         const contactForm = document.getElementById('modal-contact-form');
         const contactFeedback = document.getElementById('contact-feedback');
+        
         if (openContactBtn && closeContactBtn && contactModal && contactForm) {
             openContactBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -403,6 +337,7 @@
                     }, 300);
                 }
             });
+            
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 // Aqui você pode implementar o envio do formulário (AJAX ou integração futura)
@@ -416,6 +351,88 @@
                         contactFeedback.classList.remove('success');
                     }, 300);
                 }, 1500);
+            });
+        }
+        
+        // Modal de login admin
+        const openAdminBtn = document.getElementById('open-admin-login');
+        const closeAdminBtn = document.getElementById('close-admin-login');
+        const adminModal = document.getElementById('admin-login-modal');
+        const adminForm = document.getElementById('admin-login-form');
+        const adminFeedback = document.getElementById('admin-login-feedback');
+        
+        if (openAdminBtn && closeAdminBtn && adminModal && adminForm) {
+            openAdminBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                adminModal.style.display = 'flex';
+                setTimeout(() => {
+                    adminModal.classList.add('show');
+                }, 10);
+            });
+            
+            closeAdminBtn.addEventListener('click', function() {
+                adminModal.classList.remove('show');
+                setTimeout(() => {
+                    adminModal.style.display = 'none';
+                    adminFeedback.textContent = '';
+                }, 300);
+            });
+            
+            adminModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    adminModal.classList.remove('show');
+                    setTimeout(() => {
+                        adminModal.style.display = 'none';
+                        adminFeedback.textContent = '';
+                    }, 300);
+                }
+            });
+            
+            window.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && adminModal.style.display === 'flex') {
+                    adminModal.classList.remove('show');
+                    setTimeout(() => {
+                        adminModal.style.display = 'none';
+                        adminFeedback.textContent = '';
+                    }, 300);
+                }
+            });
+            
+            adminForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('admin-username').value.trim();
+                const password = document.getElementById('admin-password').value.trim();
+                adminFeedback.textContent = '';
+                adminFeedback.classList.remove('error', 'success');
+                
+                if (!username || !password) {
+                    adminFeedback.textContent = 'Preencha todos os campos.';
+                    adminFeedback.classList.add('error');
+                    return;
+                }
+                
+                fetch('/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                .then(({ status, body }) => {
+                    if (status === 200 && body.success) {
+                        adminFeedback.textContent = 'Login realizado! Redirecionando...';
+                        adminFeedback.classList.add('success');
+                        setTimeout(function() {
+                            window.location.href = body.redirect;
+                        }, 1000);
+                    } else {
+                        adminFeedback.textContent = body.message || 'Usuário ou senha inválidos.';
+                        adminFeedback.classList.add('error');
+                    }
+                })
+                .catch(() => {
+                    adminFeedback.textContent = 'Erro ao tentar logar. Tente novamente.';
+                    adminFeedback.classList.add('error');
+                });
             });
         }
         
