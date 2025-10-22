@@ -216,10 +216,10 @@ main {
 }
 
 .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 1rem;
     font-weight: 700;
-    /* Removida a cor padrão para permitir que o index-adjustments.css defina a cor */
+    /* Mantemos sem cor fixa para permitir personalização por página */
 }
 
 .subtitle {
@@ -416,12 +416,15 @@ main {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1001;
+    z-index: 9999;
     opacity: 0;
     transition: opacity 0.3s ease;
+    padding: 1rem;
+    overflow-y: auto;
 }
 
 .modal.show {
+    display: flex;
     opacity: 1;
 }
 
@@ -430,13 +433,15 @@ main {
     width: 100%;
     max-width: 500px;
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 2.5rem;
     position: relative;
     transform: translateY(20px);
     opacity: 0;
     transition: all 0.3s ease;
     max-height: 90vh;
     overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin: auto;
 }
 
 .modal.show .modal-content {

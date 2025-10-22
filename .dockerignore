@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Flask
+instance/*.db-journal
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Não ignorar o banco de dados (queremos incluí-lo no Docker)
+!instance/data_bank.db
+
+# Migrations (opcional - descomente se não quiser incluir)
+# migrations/
+
+# Arquivos temporários
+*.tmp
+*.bak

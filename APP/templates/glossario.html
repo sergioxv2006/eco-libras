@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Glossário | Eco Libras</title>
     <meta name="description" content="Pesquise termos do glossário de Libras.">
+    <!-- Reset CSS para normalização entre navegadores -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
     <!-- Adicionando novos estilos modernos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-adjustments.css') }}">
+    
+    <!-- Otimizações de desempenho -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/performance.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
+<body class="glossario-page">
     <!-- Header e Navegação Principal -->
     <header role="banner" class="glossary-header">
         <nav role="navigation" aria-label="Menu principal">
@@ -24,7 +31,7 @@
             <ul class="nav-links">
                 <li><a href="{{ url_for('principal.pagina_inicial') }}" aria-label="Ir para início">Início</a></li>
                 <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário" class="active">Glossário</a></li>
-                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li><a href="{{ url_for('principal.pagina_inicial') }}#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li>
                     <button id="open-contact" class="btn-nav" aria-label="Abrir menu de contato" type="button">
                         <i class="fas fa-envelope"></i> Contato
@@ -439,6 +446,14 @@
                 header.classList.remove('scrolled');
             }
         });
+        
+        // Botão de contato redireciona para página inicial com modal
+        const contactBtn = document.getElementById('open-contact');
+        if (contactBtn) {
+            contactBtn.addEventListener('click', function() {
+                window.location.href = "{{ url_for('principal.pagina_inicial') }}#contact";
+            });
+        }
     });
     </script>
 </body>

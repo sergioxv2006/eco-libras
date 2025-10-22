@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>ecolibras</title>
+    <!-- Reset CSS para normalização entre navegadores -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
     <!-- Adicionando novos estilos modernos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
+    
+    <!-- Otimizações de desempenho -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/performance.css') }}">
     <style>
         body {
             background: var(--background-color, #f4f6fa);
@@ -189,6 +195,47 @@
                 gap: 8px;
             }
         }
+        /* Botão Voltar */
+        .btn-back {
+            background: #eaf2fa;
+            color: var(--primary-color, #2a5d84);
+            border: 1.5px solid var(--primary-color, #2a5d84);
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-back:hover { background: var(--primary-color, #2a5d84); color: #fff; }
+
+        /* Melhoria dos formulários de adicionar */
+        #form-add-termo .admin-form,
+        #form-add-curso .admin-form {
+            background: #f6f7fa;
+            box-shadow: 0 1px 6px #0001;
+            border-radius: 10px;
+            padding: 18px 18px 14px 18px;
+        }
+        #form-add-termo .admin-form h3,
+        #form-add-curso .admin-form h3 {
+            margin-bottom: 8px; color: var(--primary-color); font-size: 1.15rem;
+        }
+        #form-add-termo .admin-form label,
+        #form-add-curso .admin-form label { font-weight: 600; }
+        #form-add-termo .admin-form input,
+        #form-add-termo .admin-form textarea,
+        #form-add-termo .admin-form select,
+        #form-add-curso .admin-form input,
+        #form-add-curso .admin-form textarea,
+        #form-add-curso .admin-form select {
+            border-radius: 8px;
+            border: 1.5px solid #c2d3e6;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+        #form-add-termo .admin-form textarea { min-height: 54px; }
     </style>
 </head>
 <body>
@@ -201,6 +248,7 @@
                 </a>
                 <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.25rem;font-weight:600;color:#fff;text-shadow:0 2px 8px #000a;white-space:nowrap;">Administração do Glossário</span>
                 <div style="display:flex;gap:10px;position:absolute;right:2vw;top:50%;transform:translateY(-50%);z-index:2;">
+                    <a href="/" class="btn-back" aria-label="Voltar para a página inicial"><i class="fas fa-arrow-left"></i> Voltar</a>
                     <button id="btn-add" class="btn-navbar active" type="button" style="background:rgba(255,255,255,0.10);color:#fff;font-weight:600;border:none;padding:10px 22px;border-radius:8px;font-size:1rem;transition:background 0.2s;">Adicionar</button>
                     <button id="btn-edit" class="btn-navbar" type="button" style="background:rgba(255,255,255,0.10);color:#fff;font-weight:600;border:none;padding:10px 22px;border-radius:8px;font-size:1rem;transition:background 0.2s;">Editar</button>
                 </div>
@@ -216,25 +264,25 @@
                         <button id="btn-add-curso" type="button" class="btn" style="min-width:160px;">Adicionar novo curso</button>
                     </div>
                     <div id="form-add-termo" style="display:block;">
-                        <form class="admin-form" id="form-termo-add" enctype="multipart/form-data" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:420px;margin:0 auto;">
+                        <form class="admin-form" id="form-termo-add" enctype="multipart/form-data" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:520px;margin:0 auto;">
                             <h3 style="margin-bottom:8px;color:var(--primary-color);font-size:1.15rem;">Adicionar novo termo</h3>
                             <label for="termo-novo" style="font-weight:600;">Nome do termo</label>
                             <input id="termo-novo" type="text" name="termo" placeholder="Novo termo" required style="font-size: 0.95rem;">
                             <label for="curso-novo" style="font-weight:600;">Curso</label>
                             <select id="curso-novo" name="curso_id" required style="font-size: 0.95rem;"></select>
                             <label for="desc-novo" style="font-weight:600;">Descrição</label>
-                            <textarea id="desc-novo" name="descricao" placeholder="Descrição" required style="min-height: 32px; font-size: 0.95rem;"></textarea>
+                            <textarea id="desc-novo" name="descricao" placeholder="Descrição" required style="min-height: 54px; font-size: 0.95rem;"></textarea>
                             <label for="video-novo" style="font-weight:600;">Vídeo <span style="color:red;">*</span></label>
                             <input id="video-novo" type="file" name="video" accept="video/*" required style="padding: 2px 6px; font-size: 0.95rem;">
-                            <button type="submit" class="btn" style="max-width: 180px;margin-top:10px;">Adicionar termo</button>
+                            <button type="submit" class="btn" style="max-width: 200px;margin-top:10px;align-self:flex-start;">Adicionar termo</button>
                         </form>
                     </div>
                     <div id="form-add-curso" style="display:none;">
-                        <form class="admin-form" id="form-curso-add" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:420px;margin:0 auto;background:#f6f7fa;box-shadow:0 1px 6px #0001;border-radius:10px;padding:18px 18px 14px 18px;">
+                        <form class="admin-form" id="form-curso-add" style="display:flex;flex-direction:column;align-items:stretch;gap:14px;min-width:320px;max-width:520px;margin:0 auto;">
                             <h3 style="margin-bottom:8px;color:var(--primary-color);font-size:1.15rem;">Adicionar novo curso</h3>
                             <label for="curso-novo-curso" style="font-weight:600;">Nome do curso</label>
                             <input id="curso-novo-curso" type="text" name="curso" placeholder="Nome do novo curso" required style="font-size: 0.95rem;">
-                            <button type="submit" class="btn" style="max-width: 180px;margin-top:10px;">Adicionar curso</button>
+                            <button type="submit" class="btn" style="max-width: 200px;margin-top:10px;align-self:flex-start;">Adicionar curso</button>
                         </form>
                     </div>
                 </div>
@@ -444,7 +492,7 @@
         for (const item of dados) {
             let videoHtml = '';
             if (item.video) {
-                videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${item.video}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
+                videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${(item.video||'').replace(/^videos\//,'')}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
             }
             let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;
             selectCurso += `<option value=''>Selecione um curso</option>`;
@@ -572,7 +620,7 @@
             for (const item of dados) {
                 let videoHtml = '';
                 if (item.video) {
-                    videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${item.video}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
+                    videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${(item.video||'').replace(/^videos\//,'')}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
                 }
                 // Busca cursos dinamicamente
                 let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;

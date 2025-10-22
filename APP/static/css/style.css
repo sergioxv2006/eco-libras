@@ -104,6 +104,7 @@ header nav {
     box-shadow: none;
 }
 
+/* Comentado para permitir efeito translúcido na navbar
 header::before {
     content: "";
     position: absolute;
@@ -112,6 +113,7 @@ header::before {
     z-index: 0;
     pointer-events: none;
 }
+*/
 
 /* Centraliza os botões de navegação */
 header nav ul {
@@ -577,6 +579,13 @@ p {
     text-align: center;
 }
 
+.courses h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--primary-dark);
+}
+
 .course-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -592,6 +601,20 @@ p {
     box-shadow: var(--shadow);
     transition: all 0.3s ease;
     text-align: center;
+}
+
+.course-item h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.course-item p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
 }
 
 .course-item:hover {
@@ -804,6 +827,18 @@ footer {
     
     h2 {
         font-size: 2rem;
+    }
+    
+    .courses h2 {
+        font-size: 2.2rem;
+    }
+    
+    .course-item h3 {
+        font-size: 1.4rem;
+    }
+    
+    .course-item p {
+        font-size: 1rem;
     }
     
     .about-content {

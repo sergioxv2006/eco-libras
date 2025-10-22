@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Visualização do Termo | Eco Libras</title>
+    <!-- Reset CSS para normalização entre navegadores -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
     <!-- Adicionando novos estilos modernos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/vizualizacao-termo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-adjustments.css') }}">
+    <!-- Otimizações de desempenho -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/performance.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
@@ -42,7 +48,7 @@
     });
     </script>
 </head>
-<body>
+<body class="termo-page">
     <!-- Header e Navegação Principal -->
     <header role="banner" class="glossary-header">
         <nav role="navigation" aria-label="Menu principal">
@@ -53,7 +59,7 @@
             <ul class="nav-links">
                 <li><a href="{{ url_for('principal.pagina_inicial') }}" aria-label="Ir para início">Início</a></li>
                 <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário" class="active">Glossário</a></li>
-                <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
+                <li><a href="{{ url_for('principal.pagina_inicial') }}#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li>
                     <button id="open-contact" class="btn-nav" aria-label="Abrir menu de contato" type="button">
                         <i class="fas fa-envelope"></i> Contato
@@ -65,13 +71,13 @@
                     <input type="search" placeholder="Pesquisar no site..." aria-label="Pesquisar">
                     <button type="submit" aria-label="Buscar"><i class="fas fa-search"></i></button>
                 </form>
-                <button id="open-admin-login" class="btn-nav" aria-label="Abrir login administrativo" type="button">
-                    <i class="fas fa-user-shield"></i> Admin
-                </button>
                 <button class="mobile-menu-btn" aria-label="Menu mobile">
                     <span></span>
                     <span></span>
                     <span></span>
+                </button>
+                <button id="open-admin-login" class="btn-nav" aria-label="Abrir login administrativo" type="button">
+                    <i class="fas fa-user-shield"></i> Admin
                 </button>
             </div>
         </nav>
@@ -84,7 +90,7 @@
                 <p class="curso"><strong>Curso:</strong> {{ termo.curso_nome or 'Não informado' }}</p>
                 {% if termo.video %}
                 <div class="video-container">
-                    <video src="/videos/{{ termo.video }}" controls></video>
+                    <video src="{{ url_for('static', filename='videos/' ~ (termo.video | replace('videos/',''))) }}" controls></video>
                 </div>
                 {% endif %}
                 <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Voltar ao glossário">Voltar ao Glossário</a>
@@ -141,21 +147,21 @@
     </div>
 
     <!-- Modal de Login Admin -->
-    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1">
+    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
         <div class="modal-content" role="document">
             <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
-            <h2 id="login-modal-title">Login Administrativo</h2>
-            <form id="modal-login-form" role="form" aria-labelledby="login-modal-title" autocomplete="off">
+            <h2 id="admin-login-title">Login Administrativo</h2>
+            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
                 <div class="form-group">
-                    <label for="username">Usuário:</label>
-                    <input type="text" id="username" name="username" placeholder="Nome de usuário" required aria-required="true">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label for="password">Senha:</label>
-                    <input type="password" id="password" name="password" placeholder="Sua senha" required aria-required="true">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true">
                 </div>
-                <button type="submit" class="btn-primary" aria-label="Fazer login">Entrar</button>
-                <div id="login-feedback" class="feedback-message"></div>
+                <button type="submit" class="btn-primary" aria-label="Entrar">Entrar</button>
+                <div id="admin-login-feedback" class="feedback-message"></div>
             </form>
         </div>
     </div>
@@ -165,35 +171,54 @@
     <script src="{{ url_for('static', filename='js/modal-contact.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Admin modal
+            // Admin modal (comportamento padronizado)
             const adminBtn = document.getElementById('open-admin-login');
             const closeAdmin = document.getElementById('close-admin-login');
             const adminModal = document.getElementById('admin-login-modal');
-            const loginForm = document.getElementById('modal-login-form');
-            const loginFeedback = document.getElementById('login-feedback');
-            
-            if (adminBtn && closeAdmin && adminModal) {
-                adminBtn.addEventListener('click', function() {
+            const loginForm = document.getElementById('admin-login-form');
+            const loginFeedback = document.getElementById('admin-login-feedback');
+
+            if (adminBtn && closeAdmin && adminModal && loginForm) {
+                adminBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
                     adminModal.style.display = 'flex';
-                    setTimeout(() => {
-                        adminModal.querySelector('.modal-content').style.opacity = '1';
-                        adminModal.querySelector('.modal-content').style.transform = 'translateY(0)';
-                    }, 10);
+                    adminModal.classList.add('show');
                 });
                 
-                closeAdmin.addEventListener('click', function() {
-                    adminModal.querySelector('.modal-content').style.opacity = '0';
-                    adminModal.querySelector('.modal-content').style.transform = 'translateY(-20px)';
-                    setTimeout(() => {
-                        adminModal.style.display = 'none';
-                    }, 300);
-                });
+                const closeModal = () => {
+                    adminModal.style.display = 'none';
+                    adminModal.classList.remove('show');
+                    if (loginFeedback) loginFeedback.textContent = '';
+                };
                 
-                // Fechar ao clicar fora
-                adminModal.addEventListener('click', function(e) {
-                    if (e.target === adminModal) {
-                        closeAdmin.click();
+                closeAdmin.addEventListener('click', closeModal);
+                adminModal.addEventListener('click', function(e) { if (e.target === adminModal) closeModal(); });
+                window.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('admin-username').value.trim();
+                    const password = document.getElementById('admin-password').value.trim();
+                    if (loginFeedback) loginFeedback.textContent = '';
+                    if (!username || !password) {
+                        if (loginFeedback) { loginFeedback.textContent = 'Preencha todos os campos.'; loginFeedback.style.color = 'red'; }
+                        return;
                     }
+                    fetch('/admin/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                    .then(({ status, body }) => {
+                        if (status === 200 && body.success) {
+                            if (loginFeedback) { loginFeedback.textContent = 'Login realizado! Redirecionando...'; loginFeedback.style.color = 'green'; }
+                            setTimeout(function() { window.location.href = body.redirect; }, 1000);
+                        } else {
+                            if (loginFeedback) { loginFeedback.textContent = body.message || 'Usuário ou senha inválidos.'; loginFeedback.style.color = 'red'; }
+                        }
+                    })
+                    .catch(() => { if (loginFeedback) { loginFeedback.textContent = 'Erro ao tentar logar. Tente novamente.'; loginFeedback.style.color = 'red'; } });
                 });
             }
             
@@ -217,6 +242,14 @@
                     header.classList.remove('scrolled');
                 }
             });
+            
+            // Botão de contato redireciona para página inicial com modal
+            const contactBtn = document.getElementById('open-contact');
+            if (contactBtn) {
+                contactBtn.addEventListener('click', function() {
+                    window.location.href = "{{ url_for('principal.pagina_inicial') }}#contact";
+                });
+            }
         });
     </script>
 </body>

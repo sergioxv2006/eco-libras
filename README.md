@@ -2,7 +2,24 @@
 
 Aplicação web em Flask para um glossário de termos com foco em acessibilidade. Este README explica como rodar localmente (Windows), como usar Docker e como publicar o site para acesso público.
 
-## Como rodar localmente (Windows / PowerShell)
+## 🚀 Início Rápido
+
+### Opção 1: Docker (Recomendado para colaboração)
+
+```powershell
+# Clonar o repositório
+git clone https://github.com/sergioxv2006/eco-libras.git
+cd eco-libras
+
+# Iniciar com Docker Compose
+docker-compose up --build
+```
+
+Acesse: `http://localhost:5000`
+
+📖 **[Ver documentação completa do Docker](DOCKER.md)**
+
+### Opção 2: Instalação Local (Windows / PowerShell)
 
 Pré-requisitos:
 - Python 3.11+ instalado (recomendado)

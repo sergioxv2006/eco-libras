@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Eco Libras</title>
     <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
+    <!-- Reset CSS para normalização entre navegadores -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
     <!-- Adicionando novos estilos modernos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index-adjustments.css') }}">
+    
+    <!-- Otimizações de desempenho -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/performance.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
+<body class="home">
     <!-- Header e Navegação Principal -->
     <header role="banner" class="glossary-header">
         <nav role="navigation" aria-label="Menu principal">
@@ -46,25 +55,7 @@
                     <i class="fas fa-user-shield"></i> Admin
                 </button>
             </div>
-    <!-- Modal de Login Admin -->
-    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
-        <div class="modal-content" role="document">
-            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
-            <h2 id="admin-login-title">Login Administrativo</h2>
-            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
-                <div class="form-group">
-                    <label for="admin-username">Usuário:</label>
-                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">Senha:</label>
-                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true">
-                </div>
-                <button type="submit" class="btn-primary" aria-label="Entrar">Entrar</button>
-                <div id="admin-login-feedback" class="feedback-message"></div>
-            </form>
-        </div>
-    </div>
+    
     <script>
     // Redireciona para vizualizacaoTermo.html ao buscar termo exato na navbar
     document.addEventListener('DOMContentLoaded', function() {
@@ -167,6 +158,26 @@
         </nav>
     </header>
 
+    <!-- Modal de Login Admin (movido para fora do header para evitar problemas de empilhamento) -->
+    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
+        <div class="modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
+            <h2 id="admin-login-title">Login Administrativo</h2>
+            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true">
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Entrar">Entrar</button>
+                <div id="admin-login-feedback" class="feedback-message"></div>
+            </form>
+        </div>
+    </div>
+
     <!-- Conteúdo Principal -->
     <main role="main" id="main-content">
         <!-- Seção Hero -->
@@ -184,49 +195,50 @@
 
         <!-- Seção Cursos -->
         <section id="courses" class="courses">
-            <h2>Nossos Cursos</h2>
+            <h2 class="section-title">Nossos Cursos</h2>
             <div class="course-list">
-                <!-- Curso Básico -->
+                <!-- Curso Ciência da Computação -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/sign_language_icon2.jpg') }}" alt="Ícone do curso básico de Libras" class="course-icon">
-                    <h3>Libras Básico</h3>
-                    <p>Comece sua jornada na Libras com os fundamentos essenciais. Aprenda o alfabeto, números e sinais básicos do dia a dia.</p>
+                    <img src="{{ url_for('static', filename='images/ciencia-da-computacao-icon-jpg.jpg') }}" alt="Ícone do curso de Ciência da Computação" class="course-icon">
+                    <h3>Ciência da Computação</h3>
+                    <p>Aprenda os termos técnicos em Libras para a área de tecnologia e computação. Desenvolva habilidades para comunicar conceitos de programação, redes e sistemas.</p>
                     <ul class="course-features">
-                        <li>40 horas de conteúdo</li>
-                        <li>Vídeos com legendas</li>
-                        <li>Exercícios práticos</li>
+                        <li>Termos técnicos especializados</li>
+                        <li>Sinais de programação</li>
+                        <li>Vocabulário de TI</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso básico">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_ciencia_da_computacao') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Ciência da Computação">Saiba Mais</a>
                 </article>
-                <!-- Curso Intermediário -->
+                <!-- Curso Direito -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/sign_language_icon1.jpg') }}" alt="Ícone do curso intermediário de Libras" class="course-icon">
-                    <h3>Libras Intermediário</h3>
-                    <p>Aprofunde seus conhecimentos e pratique a conversação. Desenvolva fluência em contextos do cotidiano.</p>
+                    <img src="{{ url_for('static', filename='images/direito-icon-jpg.jpg') }}" alt="Ícone do curso de Direito" class="course-icon">
+                    <h3>Direito</h3>
+                    <p>Domine a terminologia jurídica em Libras. Essencial para profissionais e estudantes que atuam na área jurídica e querem promover acessibilidade.</p>
                     <ul class="course-features">
-                        <li>60 horas de conteúdo</li>
-                        <li>Conversação prática</li>
-                        <li>Gramática da Libras</li>
+                        <li>Vocabulário jurídico</li>
+                        <li>Termos processuais</li>
+                        <li>Linguagem forense</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso intermediário">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_direito') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Direito">Saiba Mais</a>
                 </article>
+                <!-- Curso Psicologia -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/accessibility_icon1.jpg') }}" alt="Ícone do curso avançado de Libras" class="course-icon">
-                    <h3>Libras Avançado</h3>
-                    <p>Domine a Libras e explore tópicos complexos. Prepare-se para ser um comunicador fluente.</p>
+                    <img src="{{ url_for('static', filename='images/psicologia-icon-jpeg.jpeg') }}" alt="Ícone do curso de Psicologia" class="course-icon">
+                    <h3>Psicologia</h3>
+                    <p>Explore termos e conceitos psicológicos em Libras. Facilite a comunicação em consultas terapêuticas e ambientes de saúde mental com acessibilidade.</p>
                     <ul class="course-features">
-                        <li>80 horas de conteúdo</li>
-                        <li>Temas especializados</li>
-                        <li>Certificação oficial</li>
+                        <li>Termos clínicos</li>
+                        <li>Expressões emocionais</li>
+                        <li>Vocabulário terapêutico</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso avançado">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_psicologia') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Psicologia">Saiba Mais</a>
                 </article>
             </div>
         </section>
     </main>
 
         <section id="about" class="about-us">
-            <h2>Sobre Nós</h2>
+            <h2 class="section-title">Sobre Nós</h2>
             <div class="about-content">
                 <div class="about-text">
                     <p>Somos uma plataforma dedicada a tornar o aprendizado de Libras acessível a todos, com foco em conteúdo audiovisual e recursos de acessibilidade completos.</p>
@@ -239,7 +251,7 @@
                         <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
                     </div>
                     <div class="feature">
-                        <img src="{{ url_for('static', filename='images/accessibility_icon3.jpg') }}" alt="Ícone de recursos audiovisuais" class="feature-icon">
+                        <img src="{{ url_for('static', filename='images/libras-simbolo-liguagem-de-sinais.png') }}" alt="Ícone de recursos audiovisuais" class="feature-icon">
                         <h3>Audiovisual</h3>
                         <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
                     </div>
@@ -303,6 +315,32 @@
     <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modal-contact.js') }}"></script>
     <script>
+        // Script para navbar translúcida com efeito de scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.glossary-header');
+            
+            if (header) {
+                // Adiciona classe scrolled ao fazer scroll
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 100) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+            
+            // Abrir modal de contato se vindo de outra página com #contact
+            if (window.location.hash === '#contact') {
+                const contactBtn = document.getElementById('open-contact');
+                if (contactBtn) {
+                    setTimeout(() => {
+                        contactBtn.click();
+                    }, 300);
+                }
+            }
+        });
+        
         function toggleMenu() {
             const menu = document.getElementById('menuDropdown');
             menu.classList.toggle('show');
