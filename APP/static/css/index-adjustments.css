@@ -1,0 +1,547 @@
+/* Estilos adicionais para a página inicial */
+
+/* 1. Centralizar o botão "Ver Glossário" */
+.hero .btn-search {
+    display: block;
+    margin: 2rem auto 0;
+    max-width: 200px;
+    text-align: center;
+}
+
+/* 2. Mudar cores do título e subtítulo na tela inicial */
+#home .hero-content h1 {
+    color: #ffffff; /* Título em branco para maior contraste com o fundo */
+    font-size: 2.8rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.3); /* Sombra mais pronunciada para melhorar legibilidade */
+    margin-bottom: 1.5rem;
+}
+
+#home .hero-content .subtitle {
+    color: #78909c; /* Cinza azulado claro */
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+}
+
+/* 3. Atualizar estilo dos cartões de cursos */
+.course-item {
+    background: #ffffff; /* Fundo branco para melhor visibilidade */
+    border: none;
+    border-radius: 20px; /* Cantos mais arredondados */
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.course-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1.5rem;
+    border-radius: 20px; /* Cantos arredondados para os ícones */
+    border: none;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.course-item h3 {
+    color: #0d5c63; /* Azul petróleo para os títulos - matching com o título principal */
+    margin-bottom: 1rem;
+}
+
+/* Estilização suave para os botões "Saiba Mais" */
+.btn-secondary {
+    background: #e3f2fd; /* Fundo azul claro */
+    color: #0d5c63; /* Texto azul petróleo */
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 1rem;
+    box-shadow: 0 3px 10px rgba(13, 92, 99, 0.1);
+}
+
+.btn-secondary:hover {
+    background: #bbdefb; /* Azul um pouco mais escuro no hover */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(13, 92, 99, 0.2);
+}
+
+.course-features {
+    text-align: left;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+}
+
+.course-features li {
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.course-features li::before {
+    content: "✓";
+    color: #0d5c63; /* Azul petróleo para manter consistência */
+    position: absolute;
+    left: -1rem;
+}
+
+/* 4. Remover borda branca acima da imagem hero */
+.hero {
+    position: relative;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+    box-shadow: none;
+}
+
+/* Separação visual entre a navbar e o conteúdo do hero na Home */
+body.home .hero .hero-content {
+    padding-top: 120px; /* afasta o conteúdo do hero da navbar fixa */
+}
+
+@media (max-width: 768px) {
+    body.home .hero .hero-content {
+        padding-top: 100px;
+    }
+}
+
+/* Navbar translúcida apenas na Home e ajuste de scroll */
+body.home main {
+    padding-top: 0; /* Deixa o hero subir por baixo da navbar */
+}
+
+body.home header::before {
+    background: rgba(0, 0, 0, 0.45); /* Transparente sobre o hero */
+}
+
+body.home header.scrolled::before {
+    background: rgba(255, 255, 255, 0.98); /* Fica clara ao rolar */
+    box-shadow: var(--shadow-md);
+}
+
+/* Cores do título/logo e links conforme posição */
+body.home header .logo-text,
+body.home header .nav-links a,
+body.home header .btn-nav,
+body.home header .search-bar input::placeholder,
+body.home header .search-bar button {
+    color: #ffffff;
+}
+
+body.home header .search-bar input {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3);
+    color: #ffffff;
+}
+
+body.home header .nav-links a::after {
+    background: #ffffff;
+}
+
+body.home header.scrolled .logo-text,
+body.home header.scrolled .nav-links a,
+body.home header.scrolled .btn-nav,
+body.home header.scrolled .search-bar input,
+body.home header.scrolled .search-bar input::placeholder,
+body.home header.scrolled .search-bar button {
+    color: var(--text-color);
+}
+
+body.home header.scrolled .nav-links a::after {
+    background: var(--primary-dark);
+}
+
+body.home header.scrolled .btn-nav {
+    border-color: rgba(0,0,0,0.2);
+}
+
+body.home header.scrolled .search-bar input {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.2);
+}
+
+/* ========================================
+   NAVBAR COM SCROLL PARA GLOSSÁRIO E TERMOS
+   (tema verde para combinar com a identidade dessas páginas)
+   ======================================== */
+
+/* Glossário e Termos: navbar escura translúcida no topo, clara ao rolar (mesma paleta) */
+body.glossario-page header::before,
+body.termo-page header::before {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+body.glossario-page header.scrolled::before,
+body.termo-page header.scrolled::before {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--shadow-md);
+}
+
+body.glossario-page header .logo-text,
+body.glossario-page header .nav-links a,
+body.glossario-page header .btn-nav,
+body.glossario-page header .search-bar input::placeholder,
+body.glossario-page header .search-bar button,
+body.termo-page header .logo-text,
+body.termo-page header .nav-links a,
+body.termo-page header .btn-nav,
+body.termo-page header .search-bar input::placeholder,
+body.termo-page header .search-bar button {
+    color: #ffffff;
+}
+
+/* Borda dos botões no topo sobre verde */
+body.termo-page header .btn-nav {
+    border-color: rgba(255,255,255,0.5);
+}
+
+body.glossario-page header .search-bar input,
+body.termo-page header .search-bar input {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3);
+    color: #ffffff;
+}
+
+body.glossario-page header .nav-links a::after,
+body.termo-page header .nav-links a::after {
+    background: #ffffff;
+}
+
+body.glossario-page header.scrolled .logo-text,
+body.glossario-page header.scrolled .nav-links a,
+body.glossario-page header.scrolled .btn-nav,
+body.glossario-page header.scrolled .search-bar input,
+body.glossario-page header.scrolled .search-bar input::placeholder,
+body.glossario-page header.scrolled .search-bar button,
+body.termo-page header.scrolled .logo-text,
+body.termo-page header.scrolled .nav-links a,
+body.termo-page header.scrolled .btn-nav,
+body.termo-page header.scrolled .search-bar input,
+body.termo-page header.scrolled .search-bar input::placeholder,
+body.termo-page header.scrolled .search-bar button {
+    color: var(--primary-dark);
+}
+
+body.glossario-page header.scrolled .nav-links a::after,
+body.termo-page header.scrolled .nav-links a::after {
+    background: var(--primary-color);
+}
+
+body.glossario-page header.scrolled .btn-nav,
+body.termo-page header.scrolled .btn-nav {
+    border-color: rgba(0,0,0,0.2);
+}
+
+body.glossario-page header.scrolled .search-bar input,
+body.termo-page header.scrolled .search-bar input {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.2);
+}
+
+/* ===============================
+   Termos: tema verde (sem preto)
+   =============================== */
+/* Topo: overlay em verde translúcido, sem preto */
+body.termo-page header::before {
+    background: linear-gradient(to bottom, rgba(0, 80, 5, 0.65), rgba(46, 125, 50, 0.45));
+}
+
+/* Texto/ícones brancos sobre o verde translúcido */
+body.termo-page header .logo-text,
+body.termo-page header .nav-links a,
+body.termo-page header .btn-nav,
+body.termo-page header .search-bar input::placeholder,
+body.termo-page header .search-bar button {
+    color: #ffffff;
+}
+
+/* Busca translúcida sobre o verde */
+body.termo-page header .search-bar input {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.35);
+    color: #ffffff;
+}
+
+/* Sublinha dos links em branco no topo */
+body.termo-page header .nav-links a::after {
+    background: #ffffff;
+}
+
+/* Ao rolar: mantém branco opaco, textos escuros coerentes com tema */
+body.termo-page header.scrolled::before {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: var(--shadow-md);
+}
+
+body.termo-page header.scrolled .logo-text,
+body.termo-page header.scrolled .nav-links a,
+body.termo-page header.scrolled .btn-nav,
+body.termo-page header.scrolled .search-bar input,
+body.termo-page header.scrolled .search-bar input::placeholder,
+body.termo-page header.scrolled .search-bar button {
+    color: var(--primary-dark);
+}
+
+/* Sublinha em verde ao rolar */
+body.termo-page header.scrolled .nav-links a::after {
+    background: var(--primary-color);
+}
+
+/* Borda dos botões e busca ao rolar em leve cinza */
+body.termo-page header.scrolled .btn-nav {
+    border-color: rgba(0,0,0,0.2);
+}
+
+body.termo-page header.scrolled .search-bar input {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.2);
+}
+
+/* 5. Estilização da seção "Sobre Nós" */
+.about-us {
+    background: #ffffff; /* Fundo branco */
+    border-radius: 20px;
+    margin: 3rem auto;
+    max-width: 1200px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Título "Sobre Nós" com estilo similar ao de "Nossos Cursos" */
+.about-us h2 {
+    font-size: 2.6rem; /* Aumenta a fonte do título */
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d5c63 0%, #1a8891 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+    letter-spacing: 0.5px;
+}
+
+.about-us h2:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(to right, #0d5c63, transparent);
+}
+
+.feature {
+    background: #f5f9fa; /* Fundo muito suave */
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(13, 92, 99, 0.1);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px; /* Cantos arredondados para os ícones */
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 15px;
+}
+
+.feature h3 {
+    color: #0d5c63; /* Azul petróleo para manter consistência */
+    margin-bottom: 0.5rem;
+}
+
+/* Ajustes na modal de contato */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.modal.show {
+    display: flex !important;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    padding: 2.5rem;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal.show .modal-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.feedback-message {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: rgba(46, 125, 50, 0.1);
+    text-align: center;
+}
+
+/* Estilos adicionais para a seção de cursos */
+.courses {
+    padding: 4rem 2rem;
+}
+
+/* Gradiente consistente apenas para os títulos das seções principais da home */
+.courses > h2,
+.about-us > h2,
+section > h2.section-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d5c63 0%, #1a8891 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+}
+
+.courses > h2 {
+    font-size: 2.8rem; /* Um pouco maior para Nossos Cursos */
+}
+
+/* Evitar que títulos do glossário/cartos sejam afetados por gradiente e tamanho da home */
+.glossario-section h2,
+.glossario-card h2 {
+    background: none !important;
+    -webkit-text-fill-color: initial !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    font-size: 1.25rem !important;
+    color: var(--primary-dark, #005005) !important;
+}
+
+/* Título do modal de contato com gradiente */
+#contact-modal-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d5c63 0%, #1a8891 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* Título do modal de login admin com o mesmo estilo da seção "Sobre Nós" */
+#admin-login-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0d5c63 0%, #1a8891 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+/* Responsivo: ajustar tamanho do título Sobre Nós em telas menores */
+@media (max-width: 768px) {
+    .about-us h2 {
+        font-size: 2.1rem;
+    }
+}
+
+.course-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.course-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #0d5c63, transparent);
+    transition: left 0.5s ease;
+}
+
+.course-item:hover::before {
+    left: 100%;
+}
+
+.course-features li {
+    font-size: 1rem;
+    transition: padding-left 0.3s ease;
+}
+
+.course-features li:hover {
+    padding-left: 25px;
+    color: #0d5c63;
+}
+
+.btn-secondary {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 92, 99, 0.3);
+}
+
+/* Responsivo: ajustar tamanho dos títulos em telas menores */
+@media (max-width: 768px) {
+    .about-us h2,
+    section h2:not(.modal-content h2):not(#admin-login-title):not(#contact-modal-title) {
+        font-size: 2.1rem;
+    }
+    
+    .courses h2 {
+        font-size: 2.2rem;
+    }
+}

@@ -262,6 +262,14 @@ def termos_ciencia_da_computacao():
         return redirect(url_for('principal.pagina_glossario'))
     return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
 
+@rotas_principal.route('/cursos/direito')
+def termos_direito():
+    curso = Curso.query.filter(Curso.nome.ilike('%direito%')).first()
+    if not curso:
+        flash('Curso Direito não encontrado.', 'warning')
+        return redirect(url_for('principal.pagina_glossario'))
+    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
+
 # Opcional: rota genérica por id de curso
 @rotas_principal.route('/cursos/<int:curso_id>')
 def termos_por_curso_id(curso_id):

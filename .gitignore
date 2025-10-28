@@ -1,3 +1,37 @@
 # Ignorar arquivos de variáveis de ambiente
 .env
-.env.*
+
+# Mas manter o exemplo
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Flask
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Permitir banco de dados para compartilhamento (REMOVA em produção!)
+# Se não quiser versionar o banco, descomente a linha abaixo:
+# instance/data_bank.db
+
+# Arquivos temporários
+*.tmp
+*.bak

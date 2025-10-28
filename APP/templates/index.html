@@ -3,54 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ecolibras</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Eco Libras</title>
     <meta name="description" content="Curso de Libras audiovisual com foco em acessibilidade. Aprenda a Língua Brasileira de Sinais de forma inclusiva e interativa.">
+    <!-- Reset CSS para normalização entre navegadores -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/accessibility.css') }}">
+    <!-- Adicionando novos estilos modernos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/glossario-modern.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/logo-modern.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-adjustments.css') }}">
+    
+    <!-- Otimizações de desempenho -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/performance.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
+<body class="home">
     <!-- Header e Navegação Principal -->
-    <header role="banner">
+    <header role="banner" class="glossary-header">
         <nav role="navigation" aria-label="Menu principal">
             <div class="logo">
                 <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Ícone de acessibilidade" class="logo-icon">
-                Eco Libras
+                <span class="logo-text">Eco Libras</span>
             </div>
-            <ul>
-                <li><a href="#home" aria-label="Ir para início">Início</a></li>
+            <ul class="nav-links">
+                <li><a href="#home" aria-label="Ir para início" class="active">Início</a></li>
                 <li><a href="{{ url_for('principal.pagina_glossario') }}" aria-label="Ir para o glossário">Glossário</a></li>
                 <li><a href="#about" aria-label="Ir para sobre nós">Sobre</a></li>
                 <li>
-                    <button id="open-contact" class="btn btn-contact" aria-label="Abrir menu de contato" type="button">Contato</button>
+                    <button id="open-contact" class="btn-nav" aria-label="Abrir menu de contato" type="button">
+                        <i class="fas fa-envelope"></i> Contato
+                    </button>
                 </li>
             </ul>
-            <form class="search-bar" role="search" aria-label="Pesquisar no site">
-                <input id="navbar-search-input" type="search" placeholder="Pesquisar no Glossario..." aria-label="Pesquisar">
-                <button type="submit" aria-label="Buscar">🔍</button>
-            </form>
-            <!-- Botão/menu de acessibilidade e admin -->
-            <li>
-                <button id="open-admin-login" class="btn btn-contact" aria-label="Abrir login administrativo" type="button">Admin</button>
-            </li>
-    <!-- Modal de Login Admin -->
-    <div id="admin-login-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
-        <div class="contact-modal-content" role="document">
-            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
-            <h2 id="admin-login-title">Login Administrativo</h2>
-            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
-                <div class="form-group">
-                    <label for="admin-username">Usuário:</label>
-                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">Senha:</label>
-                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true" style="width:100%;padding:15px;border:2px solid var(--border-color);border-radius:8px;font-size:1rem;transition:border-color 0.3s ease;">
-                </div>
-                <button type="submit" class="btn" aria-label="Entrar">Entrar</button>
-                <div id="admin-login-feedback" style="margin-top:10px;font-weight:bold;"></div>
-            </form>
-        </div>
-    </div>
+            <div class="right-nav">
+                <form class="search-bar" role="search" aria-label="Pesquisar no site">
+                    <input id="navbar-search-input" type="search" placeholder="Pesquisar no site..." aria-label="Pesquisar">
+                    <button type="submit" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                </form>
+                <button class="mobile-menu-btn" aria-label="Menu mobile">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button id="open-admin-login" class="btn-nav" aria-label="Abrir login administrativo" type="button">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+            </div>
+    
     <script>
     // Redireciona para vizualizacaoTermo.html ao buscar termo exato na navbar
     document.addEventListener('DOMContentLoaded', function() {
@@ -153,62 +158,87 @@
         </nav>
     </header>
 
+    <!-- Modal de Login Admin (movido para fora do header para evitar problemas de empilhamento) -->
+    <div id="admin-login-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1" style="display:none;">
+        <div class="modal-content" role="document">
+            <button class="close-modal" aria-label="Fechar login" id="close-admin-login" type="button">&times;</button>
+            <h2 id="admin-login-title">Login Administrativo</h2>
+            <form id="admin-login-form" role="form" aria-labelledby="admin-login-title" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="admin-username">Usuário:</label>
+                    <input type="text" id="admin-username" name="admin-username" placeholder="Usuário" required aria-required="true">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Senha:</label>
+                    <input type="password" id="admin-password" name="admin-password" placeholder="Senha" required aria-required="true">
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Entrar">Entrar</button>
+                <div id="admin-login-feedback" class="feedback-message"></div>
+            </form>
+        </div>
+    </div>
+
     <!-- Conteúdo Principal -->
     <main role="main" id="main-content">
         <!-- Seção Hero -->
         <section id="home" class="hero">
-            <div class="hero-content">
-                <h1>Descubra o Glossário de Libras para Cursos</h1>
-                <p>Tenha acesso a um glossário exclusivo em Língua Brasileira de Sinais, com os principais termos usados em cursos e no ambiente acadêmico.</p>
-                <a href="{{ url_for('principal.pagina_glossario') }}" class="btn" aria-label="Ver glossário completo">Ver Glossário</a>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Descubra o Glossário de Libras para Cursos</h1>
+                    <p class="subtitle">Tenha acesso a um glossário exclusivo em Língua Brasileira de Sinais, com os principais termos usados em cursos e no ambiente acadêmico.</p>
+                    <a href="{{ url_for('principal.pagina_glossario') }}" class="btn-search" aria-label="Ver glossário completo">
+                        Ver Glossário <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </section>
 
         <!-- Seção Cursos -->
         <section id="courses" class="courses">
-            <h2>Nossos Cursos</h2>
+            <h2 class="section-title">Nossos Cursos</h2>
             <div class="course-list">
-                <!-- Curso Básico -->
+                <!-- Curso Ciência da Computação -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/sign_language_icon2.jpg') }}" alt="Ícone do curso básico de Libras" class="course-icon">
-                    <h3>Libras Básico</h3>
-                    <p>Comece sua jornada na Libras com os fundamentos essenciais. Aprenda o alfabeto, números e sinais básicos do dia a dia.</p>
+                    <img src="{{ url_for('static', filename='images/ciencia-da-computacao-icon-jpg.jpg') }}" alt="Ícone do curso de Ciência da Computação" class="course-icon">
+                    <h3>Ciência da Computação</h3>
+                    <p>Aprenda os termos técnicos em Libras para a área de tecnologia e computação. Desenvolva habilidades para comunicar conceitos de programação, redes e sistemas.</p>
                     <ul class="course-features">
-                        <li>40 horas de conteúdo</li>
-                        <li>Vídeos com legendas</li>
-                        <li>Exercícios práticos</li>
+                        <li>Termos técnicos especializados</li>
+                        <li>Sinais de programação</li>
+                        <li>Vocabulário de TI</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso básico">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_ciencia_da_computacao') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Ciência da Computação">Saiba Mais</a>
                 </article>
-                <!-- Curso Intermediário -->
+                <!-- Curso Direito -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/sign_language_icon1.jpg') }}" alt="Ícone do curso intermediário de Libras" class="course-icon">
-                    <h3>Libras Intermediário</h3>
-                    <p>Aprofunde seus conhecimentos e pratique a conversação. Desenvolva fluência em contextos do cotidiano.</p>
+                    <img src="{{ url_for('static', filename='images/direito-icon-jpg.jpg') }}" alt="Ícone do curso de Direito" class="course-icon">
+                    <h3>Direito</h3>
+                    <p>Domine a terminologia jurídica em Libras. Essencial para profissionais e estudantes que atuam na área jurídica e querem promover acessibilidade.</p>
                     <ul class="course-features">
-                        <li>60 horas de conteúdo</li>
-                        <li>Conversação prática</li>
-                        <li>Gramática da Libras</li>
+                        <li>Vocabulário jurídico</li>
+                        <li>Termos processuais</li>
+                        <li>Linguagem forense</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso intermediário">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_direito') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Direito">Saiba Mais</a>
                 </article>
+                <!-- Curso Psicologia -->
                 <article class="course-item">
-                    <img src="{{ url_for('static', filename='images/accessibility_icon1.jpg') }}" alt="Ícone do curso avançado de Libras" class="course-icon">
-                    <h3>Libras Avançado</h3>
-                    <p>Domine a Libras e explore tópicos complexos. Prepare-se para ser um comunicador fluente.</p>
+                    <img src="{{ url_for('static', filename='images/psicologia-icon-jpeg.jpeg') }}" alt="Ícone do curso de Psicologia" class="course-icon">
+                    <h3>Psicologia</h3>
+                    <p>Explore termos e conceitos psicológicos em Libras. Facilite a comunicação em consultas terapêuticas e ambientes de saúde mental com acessibilidade.</p>
                     <ul class="course-features">
-                        <li>80 horas de conteúdo</li>
-                        <li>Temas especializados</li>
-                        <li>Certificação oficial</li>
+                        <li>Termos clínicos</li>
+                        <li>Expressões emocionais</li>
+                        <li>Vocabulário terapêutico</li>
                     </ul>
-                    <a href="#" class="btn-secondary" aria-label="Saiba mais sobre o curso avançado">Saiba Mais</a>
+                    <a href="{{ url_for('principal.termos_psicologia') }}" class="btn-secondary" aria-label="Saiba mais sobre o glossário de Psicologia">Saiba Mais</a>
                 </article>
             </div>
         </section>
     </main>
 
         <section id="about" class="about-us">
-            <h2>Sobre Nós</h2>
+            <h2 class="section-title">Sobre Nós</h2>
             <div class="about-content">
                 <div class="about-text">
                     <p>Somos uma plataforma dedicada a tornar o aprendizado de Libras acessível a todos, com foco em conteúdo audiovisual e recursos de acessibilidade completos.</p>
@@ -221,7 +251,7 @@
                         <p>Conteúdo totalmente acessível para pessoas com diferentes necessidades.</p>
                     </div>
                     <div class="feature">
-                        <img src="{{ url_for('static', filename='images/accessibility_icon3.jpg') }}" alt="Ícone de recursos audiovisuais" class="feature-icon">
+                        <img src="{{ url_for('static', filename='images/libras-simbolo-liguagem-de-sinais.png') }}" alt="Ícone de recursos audiovisuais" class="feature-icon">
                         <h3>Audiovisual</h3>
                         <p>Vídeos com legendas, transcrições e intérpretes de Libras.</p>
                     </div>
@@ -232,16 +262,29 @@
 
 
     <footer role="contentinfo">
-        <div class="footer-content">
-            <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
-            <p>Comprometidos com a acessibilidade e inclusão digital.</p>
-            <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='images/WhatsApp Image 2025-08-23 at 18.20.33.jpeg') }}" alt="Logo Eco Libras" class="footer-logo-img">
+                    <span>Eco Libras</span>
+                </div>
+                <div class="footer-links">
+                    <p>&copy; 2025 Curso de Libras. Todos os direitos reservados.</p>
+                    <p>Comprometidos com a acessibilidade e inclusão digital.</p>
+                    <p><a href="{{ url_for('static', filename='acessibilidade.html') }}" aria-label="Saiba mais sobre nossos recursos de acessibilidade">Recursos de Acessibilidade</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="Siga-nos no Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Siga-nos no Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Siga-nos no YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <!-- Modal de Contato Acessível -->
-    <div id="contact-modal" class="contact-modal" aria-modal="true" role="dialog" tabindex="-1">
-        <div class="contact-modal-content" role="document">
+    <div id="contact-modal" class="modal" aria-modal="true" role="dialog" tabindex="-1">
+        <div class="modal-content" role="document">
             <button class="close-modal" aria-label="Fechar contato" id="close-contact" type="button">&times;</button>
             <h2 id="contact-modal-title">Entre em Contato</h2>
             <p>Tem dúvidas ou deseja adicionar uma nova palavra?</p>
@@ -262,17 +305,42 @@
                     <textarea id="message" name="message" placeholder="Sua Mensagem" required aria-required="true" aria-describedby="message-help"></textarea>
                     <small id="message-help">Descreva sua dúvida ou comentário</small>
                 </div>
-                <button type="submit" class="btn" aria-label="Enviar mensagem">Enviar</button>
-                <div id="contact-feedback" style="margin-top:10px;font-weight:bold;"></div>
+                <button type="submit" class="btn-primary" aria-label="Enviar mensagem">Enviar</button>
+                <div id="contact-feedback" class="feedback-message"></div>
             </form>
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modal-contact.js') }}"></script>
     <script>
-        // filepath: c:\Users\gusta\Documents\GitHub\eco-libras\js\script.js
-        // ...existing code...
+        // Script para navbar translúcida com efeito de scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.glossary-header');
+            
+            if (header) {
+                // Adiciona classe scrolled ao fazer scroll
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 100) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+            }
+            
+            // Abrir modal de contato se vindo de outra página com #contact
+            if (window.location.hash === '#contact') {
+                const contactBtn = document.getElementById('open-contact');
+                if (contactBtn) {
+                    setTimeout(() => {
+                        contactBtn.click();
+                    }, 300);
+                }
+            }
+        });
+        
         function toggleMenu() {
             const menu = document.getElementById('menuDropdown');
             menu.classList.toggle('show');
@@ -286,56 +354,8 @@
         }
 
         function changeFontSize(scale) {
-            document.documentElement.style.fontSize = (scale * 100) + '%';
+            document.documentElement.style.fontSize = (scale * 80) + '%';
         }
-
-        // ...existing code...
-    </script>
-    
-    <!-- JavaScript para efeitos especiais da logo -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const logo = document.querySelector('.logo-icon');
-        
-        if (logo) {
-            // Adiciona um efeito especial ao clicar na logo
-            logo.addEventListener('click', function() {
-                // Adiciona uma classe temporária para rotação completa
-                logo.style.animation = 'logoRotate 1s ease-in-out';
-                
-                // Remove a animação após completar
-                setTimeout(() => {
-                    logo.style.animation = 'logoEntrance 1.2s ease-out';
-                }, 1000);
-            });
-            
-            // Efeito de "respiração" suave quando a página fica idle
-            let idleTimer;
-            let isIdle = false;
-            
-            function resetIdleTimer() {
-                clearTimeout(idleTimer);
-                if (isIdle) {
-                    logo.style.animation = 'logoEntrance 1.2s ease-out';
-                    isIdle = false;
-                }
-                
-                idleTimer = setTimeout(() => {
-                    if (!logo.matches(':hover')) {
-                        logo.style.animation = 'logoPulse 3s infinite ease-in-out';
-                        isIdle = true;
-                    }
-                }, 5000); // 5 segundos de inatividade
-            }
-            
-            // Reset timer on user activity
-            ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
-                document.addEventListener(event, resetIdleTimer, true);
-            });
-            
-            resetIdleTimer();
-        }
-    });
     </script>
 </body>
 </html>

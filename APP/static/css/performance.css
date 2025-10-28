@@ -1,0 +1,70 @@
+/* Otimizações de desempenho para todos os navegadores */
+
+/* Utilizar GPU para renderização quando possível */
+.gpu-accelerated,
+.logo,
+.nav-links,
+.right-nav,
+.btn,
+.card,
+.hero-section,
+.footer,
+.modal,
+[class*="animate-"],
+[style*="transition"],
+[style*="transform"] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -moz-transform: translateZ(0);
+    -moz-backface-visibility: hidden;
+}
+
+/* Dicas para o navegador sobre conteúdo que não muda frequentemente */
+.static-content,
+.logo,
+header,
+footer,
+.hero-section {
+    content-visibility: auto;
+}
+
+/* Pré-carregamento de recursos essenciais */
+@media (prefers-reduced-motion: no-preference) {
+    :root {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Melhorias de layout para prevenção de FOUC (Flash of Unstyled Content) */
+.hidden-until-loaded {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loaded .hidden-until-loaded {
+    opacity: 1;
+}
+
+/* Otimizações de desempenho para imagens */
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Otimizações para dispositivos móveis */
+@media (max-width: 768px) {
+    /* Simplificações para melhorar desempenho em dispositivos móveis */
+    .simplified-for-mobile {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
+    
+    /* Reduzindo complexidade em dispositivos menores */
+    .complex-animation {
+        animation-duration: 0ms !important;
+    }
+}
