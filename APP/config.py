@@ -23,3 +23,4 @@ class Configuracao:
 
     # Desativa o rastreamento de modificações (melhora performance)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+

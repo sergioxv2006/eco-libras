@@ -318,6 +318,17 @@
             </div>
         </div>
     </div>
+    <!-- Simples formulário de login (se necessário) -->
+    <form id="admin-login-form" method="post" action="/admin/login" class="admin-login-form">
+        <label>Usuário <input name="username" required></label>
+        <label>Senha <input name="password" type="password" required></label>
+        <div id="admin-login-message" style="color:#c00;margin-top:.5rem"></div>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <button id="admin-logout">Logout</button>
+
+    <script src="{{ url_for('static', filename='js/admin_auth.js') }}"></script>
     <script>
     // Utilitário para feedback
     function showFeedback(msg, type='success') {
@@ -573,90 +584,88 @@
             pesquisarTermo();
         }
     });
-    </script>
-    <script>
-        // Alternância de seções
-        const btnAdd = document.getElementById('btn-add');
-        const btnEdit = document.getElementById('btn-edit');
-        const sectionAdd = document.getElementById('section-add');
-        const sectionEdit = document.getElementById('section-edit');
-        btnAdd.onclick = function() {
-            btnAdd.classList.add('active');
-            btnEdit.classList.remove('active');
-            sectionAdd.classList.add('active');
-            sectionEdit.classList.remove('active');
-        };
-        btnEdit.onclick = function() {
+    // Alternância de seções
+    const btnAdd = document.getElementById('btn-add');
+    const btnEdit = document.getElementById('btn-edit');
+    const sectionAdd = document.getElementById('section-add');
+    const sectionEdit = document.getElementById('section-edit');
+    btnAdd.onclick = function() {
+        btnAdd.classList.add('active');
+        btnEdit.classList.remove('active');
+        sectionAdd.classList.add('active');
+        sectionEdit.classList.remove('active');
+    };
+    btnEdit.onclick = function() {
+        btnEdit.classList.add('active');
+        btnAdd.classList.remove('active');
+        sectionEdit.classList.add('active');
+        sectionAdd.classList.remove('active');
+        pesquisarTermo();
+    };
+
+    // Se a URL tiver ?editar_id=, ativa a aba de edição e faz a busca
+    window.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('editar_id')) {
             btnEdit.classList.add('active');
             btnAdd.classList.remove('active');
             sectionEdit.classList.add('active');
             sectionAdd.classList.remove('active');
             pesquisarTermo();
-        };
-
-        // Se a URL tiver ?editar_id=, ativa a aba de edição e faz a busca
-        window.addEventListener('DOMContentLoaded', function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.has('editar_id')) {
-                btnEdit.classList.add('active');
-                btnAdd.classList.remove('active');
-                sectionEdit.classList.add('active');
-                sectionAdd.classList.remove('active');
-                pesquisarTermo();
-            }
-        });
-        // Pesquisa de termos (edição)
-        async function pesquisarTermo() {
-            const termo = document.getElementById('search-termo').value.trim();
-            const lista = document.getElementById('glossario-list-edit');
-            lista.innerHTML = '<p>Buscando...</p>';
-            const resp = await fetch(`/admin/buscar?termo=${encodeURIComponent(termo)}`);
-            const dados = await resp.json();
-            if (!dados.length) {
-                lista.innerHTML = '<p>Nenhum termo cadastrado no glossário.</p>';
-                return;
-            }
-            lista.innerHTML = '';
-            for (const item of dados) {
-                let videoHtml = '';
-                if (item.video) {
-                    videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${(item.video||'').replace(/^videos\//,'')}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
-                }
-                // Busca cursos dinamicamente
-                let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;
-                selectCurso += `<option value=''>Selecione um curso</option>`;
-                if(window.cursosList && window.cursosList.length) {
-                    for (const curso of window.cursosList) {
-                        selectCurso += `<option value='${curso.id}' ${item.curso_id==curso.id ? 'selected' : ''}>${curso.nome}</option>`;
-                    }
-                }
-                selectCurso += `</select>`;
-                lista.innerHTML += `
-                <div class='glossario-item' data-termo='${item.termo.toLowerCase()}'>
-                    ${videoHtml}
-                    <form class='glossario-item-form' method='post' action='/admin/editar' enctype='multipart/form-data' onsubmit='return salvarTermoAjax(event, this)'>
-                        <input type='hidden' name='id' value='${item.id}'>
-                        <div style='font-weight:700;font-size:1.1rem;margin-bottom:2px;color:var(--primary-color);'>Nome atual do termo: <span style='color:var(--primary-dark);font-weight:700;'>${item.termo}</span></div>
-                        <label for='termo-${item.id}'>Editar nome do termo</label>
-                        <input id='termo-${item.id}' type='text' name='termo' value='${item.termo}' required placeholder='Editar termo'>
-                        <label for='curso-${item.id}'>Curso</label>
-                        ${selectCurso}
-                        <label for='desc-${item.id}'>Descrição</label>
-                        <textarea id='desc-${item.id}' name='descricao' required placeholder='Editar descrição'>${item.descricao}</textarea>
-                        <div class='actions'>
-                            <button type='submit' class='btn-secondary'>Salvar</button>
-                            <button type='button' class='btn-secondary' onclick='removerTermoAjax(${item.id}, this)'>Remover</button>
-                            <label for='video-${item.id}' class='btn-secondary' style='padding:7px 32px; margin-bottom:0; cursor:pointer; min-width:150px; text-align:center; display:inline-block;'>
-                                Novo vídeo
-                                <input id='video-${item.id}' type='file' name='video' accept='video/*' style='display:none;' onchange="document.getElementById('video-file-name-${item.id}').textContent = this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';">
-                            </label>
-                            <span id='video-file-name-${item.id}' style='font-size:0.95rem;color:#555;'>Nenhum arquivo selecionado</span>
-                        </div>
-                    </form>
-                </div>`;
-            }
-
         }
+    });
+    // Pesquisa de termos (edição)
+    async function pesquisarTermo() {
+        const termo = document.getElementById('search-termo').value.trim();
+        const lista = document.getElementById('glossario-list-edit');
+        lista.innerHTML = '<p>Buscando...</p>';
+        const resp = await fetch(`/admin/buscar?termo=${encodeURIComponent(termo)}`);
+        const dados = await resp.json();
+        if (!dados.length) {
+            lista.innerHTML = '<p>Nenhum termo cadastrado no glossário.</p>';
+            return;
+        }
+        lista.innerHTML = '';
+        for (const item of dados) {
+            let videoHtml = '';
+            if (item.video) {
+                videoHtml = `<div class='glossario-item-video'><video controls style='width:100%;max-width:320px;max-height:220px;display:block;'><source src='/static/videos/${(item.video||'').replace(/^videos\//,'')}' type='video/mp4'>Seu navegador não suporta vídeo.</video></div>`;
+            }
+            // Busca cursos dinamicamente
+            let selectCurso = `<select id='curso-${item.id}' name='curso_id' required style='font-size: 0.95rem;'>`;
+            selectCurso += `<option value=''>Selecione um curso</option>`;
+            if(window.cursosList && window.cursosList.length) {
+                for (const curso of window.cursosList) {
+                    selectCurso += `<option value='${curso.id}' ${item.curso_id==curso.id ? 'selected' : ''}>${curso.nome}</option>`;
+                }
+            }
+            selectCurso += `</select>`;
+            lista.innerHTML += `
+            <div class='glossario-item' data-termo='${item.termo.toLowerCase()}'>
+                ${videoHtml}
+                <form class='glossario-item-form' method='post' action='/admin/editar' enctype='multipart/form-data' onsubmit='return salvarTermoAjax(event, this)'>
+                    <input type='hidden' name='id' value='${item.id}'>
+                    <div style='font-weight:700;font-size:1.1rem;margin-bottom:2px;color:var(--primary-color);'>Nome atual do termo: <span style='color:var(--primary-dark);font-weight:700;'>${item.termo}</span></div>
+                    <label for='termo-${item.id}'>Editar nome do termo</label>
+                    <input id='termo-${item.id}' type='text' name='termo' value='${item.termo}' required placeholder='Editar termo'>
+                    <label for='curso-${item.id}'>Curso</label>
+                    ${selectCurso}
+                    <label for='desc-${item.id}'>Descrição</label>
+                    <textarea id='desc-${item.id}' name='descricao' required placeholder='Editar descrição'>${item.descricao}</textarea>
+                    <div class='actions'>
+                        <button type='submit' class='btn-secondary'>Salvar</button>
+                        <button type='button' class='btn-secondary' onclick='removerTermoAjax(${item.id}, this)'>Remover</button>
+                        <label for='video-${item.id}' class='btn-secondary' style='padding:7px 32px; margin-bottom:0; cursor:pointer; min-width:150px; text-align:center; display:inline-block;'>
+                            Novo vídeo
+                            <input id='video-${item.id}' type='file' name='video' accept='video/*' style='display:none;' onchange="document.getElementById('video-file-name-${item.id}').textContent = this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';">
+                        </label>
+                        <span id='video-file-name-${item.id}' style='font-size:0.95rem;color:#555;'>Nenhum arquivo selecionado</span>
+                    </div>
+                </form>
+            </div>`;
+        }
+
+    }
 
         // AJAX para salvar termo sem recarregar
         async function salvarTermoAjax(event, form) {

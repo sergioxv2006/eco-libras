@@ -1,70 +1,32 @@
 import os
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
+from flask import Blueprint, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from .models import Termo, Curso
 from .extencoes import db
-import os
-from .routes_principal import rotas_principal
-from .routes_admin import rotas_admin
-from .auth_routes import rotas_auth
+from .auth_utils import token_required
 
-__all__ = ["rotas_principal", "rotas_admin", "rotas_auth"]
+rotas_admin = Blueprint("admin", __name__, url_prefix="/admin")
 
-# Página do glossário
-@rotas_principal.route("/glossario")
-def pagina_glossario():
-    return render_template("glossario.html")
-
-# Página inicial
-@rotas_principal.route("/")
-def pagina_inicial():
-    return render_template("index.html")
-
-# Página de acessibilidade
-@rotas_principal.route("/acessibilidade")
-def pagina_acessibilidade():
-    return render_template("acessibilidade.html")
-
-
-# Proteção de rota admin
-def admin_logado():
-    return session.get('admin_logado') is True
-
-@rotas_principal.route("/admin", methods=["GET"])
+@rotas_admin.route("/")
+@token_required
 def pagina_admin():
-    if not admin_logado():
-        flash("Faça login para acessar a área administrativa.", "warning")
-        return redirect(url_for("principal.pagina_inicial"))
     cursos = Curso.query.order_by(Curso.nome).all()
     curso_id = request.args.get('curso_id', type=int)
+    
     if curso_id:
         glossario = Termo.query.filter_by(curso_id=curso_id).order_by(Termo.id.desc()).all()
     else:
         glossario = Termo.query.order_by(Termo.id.desc()).all()
+        
     return render_template("admin.html", glossario=glossario, cursos=cursos, curso_id=curso_id)
 
-# Login admin via AJAX
-@rotas_principal.route("/admin/login", methods=["POST"])
-def admin_login():
-    data = request.get_json() or request.form
-    username = data.get("username")
-    password = data.get("password")
-    admin_user = os.environ.get("ADMIN_USER", "admin")
-    admin_password = os.environ.get("ADMIN_PASSWORD", "admin")
-    if username == admin_user and password == admin_password:
-        session['admin_logado'] = True
-        return jsonify({"success": True, "redirect": url_for("principal.pagina_admin")})
-    return jsonify({"success": False, "message": "Usuário ou senha inválidos."}), 401
-
-# Logout admin
-@rotas_principal.route("/admin/logout")
+@rotas_admin.route("/logout")
 def admin_logout():
-    session.pop('admin_logado', None)
-    flash("Logout realizado com sucesso!", "success")
+    flash("Logout: descarte o token no cliente.", "success")
     return redirect(url_for("principal.pagina_inicial"))
 
-# Adicionar novo termo
-@rotas_principal.route("/admin/adicionar", methods=["POST"])
+@rotas_admin.route("/adicionar", methods=["POST"])
+@token_required
 def adicionar_termo():
     termo = request.form.get("termo")
     descricao = request.form.get("descricao")
@@ -87,33 +49,33 @@ def adicionar_termo():
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
         return jsonify({'success': True, 'message': 'Termo adicionado com sucesso!'})
     flash("Termo adicionado com sucesso!", "success")
-    return redirect(url_for("principal.pagina_admin"))
+    return redirect(url_for("admin.pagina_admin"))
 
-# Adicionar novo curso
-@rotas_principal.route("/admin/adicionar_curso", methods=["POST"])
+@rotas_admin.route("/adicionar_curso", methods=["POST"])
+@token_required
 def adicionar_curso():
     nome_curso = request.form.get("curso")
     if not nome_curso:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
             return jsonify({'success': False, 'message': 'Nome do curso é obrigatório!'}), 400
         flash("Nome do curso é obrigatório!", "danger")
-        return redirect(url_for("principal.pagina_admin"))
+        return redirect(url_for("admin.pagina_admin"))
     curso_existente = Curso.query.filter_by(nome=nome_curso).first()
     if curso_existente:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
             return jsonify({'success': False, 'message': 'Já existe um curso com esse nome!'}), 400
         flash("Já existe um curso com esse nome!", "warning")
-        return redirect(url_for("principal.pagina_admin"))
+        return redirect(url_for("admin.pagina_admin"))
     novo_curso = Curso(nome=nome_curso)
     db.session.add(novo_curso)
     db.session.commit()
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
         return jsonify({'success': True, 'message': 'Curso adicionado com sucesso!'})
     flash("Curso adicionado com sucesso!", "success")
-    return redirect(url_for("principal.pagina_admin"))
+    return redirect(url_for("admin.pagina_admin"))
 
-# Editar termo
-@rotas_principal.route("/admin/editar", methods=["POST"])
+@rotas_admin.route("/editar", methods=["POST"])
+@token_required
 def editar_termo():
     termo_id = request.form.get("id")
     novo_nome = request.form.get("termo")
@@ -126,7 +88,6 @@ def editar_termo():
         termo.curso_id = novo_curso_id
         termo.descricao = nova_descricao
         if video_file and video_file.filename:
-            # Remove vídeo antigo
             if termo.video:
                 caminho_antigo = os.path.join("APP", "static", "videos", termo.video)
                 if os.path.exists(caminho_antigo):
@@ -134,7 +95,6 @@ def editar_termo():
                         os.remove(caminho_antigo)
                     except Exception:
                         pass
-            # Salva novo vídeo
             video_filename = secure_filename(video_file.filename)
             pasta_videos = os.path.join("APP", "static", "videos")
             os.makedirs(pasta_videos, exist_ok=True)
@@ -144,10 +104,10 @@ def editar_termo():
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
             return jsonify({'success': True, 'message': 'Termo editado com sucesso!'})
         flash(f"Termo '{novo_nome}' editado com sucesso!", "success")
-    return redirect(url_for("principal.pagina_admin", editar_id=termo_id))
+    return redirect(url_for("admin.pagina_admin", editar_id=termo_id))
 
-# Remover termo
-@rotas_principal.route("/admin/remover", methods=["POST"])
+@rotas_admin.route("/remover", methods=["POST"])
+@token_required
 def remover_termo():
     termo_id = request.form.get("id")
     termo = Termo.query.get(termo_id)
@@ -157,10 +117,10 @@ def remover_termo():
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.accept_mimetypes['application/json']:
             return jsonify({'success': True, 'message': 'Termo removido com sucesso!'})
         flash("Termo removido com sucesso!", "success")
-    return redirect(url_for("principal.pagina_admin"))
+    return redirect(url_for("admin.pagina_admin"))
 
-# Remover curso
-@rotas_principal.route("/admin/remover_curso", methods=["POST"])
+@rotas_admin.route("/remover_curso", methods=["POST"])
+@token_required
 def remover_curso():
     curso_id = request.form.get("id", type=int)
     curso = Curso.query.get(curso_id)
@@ -173,15 +133,14 @@ def remover_curso():
         return jsonify({'success': True, 'message': f'Curso e {termos_vinculados} termo(s) vinculados removidos com sucesso!'}), 200
     return jsonify({'success': True, 'message': 'Curso removido com sucesso!'}), 200
 
-# AJAX: buscar termos
-@rotas_principal.route("/admin/buscar", methods=["GET"])
+@rotas_admin.route("/buscar", methods=["GET"])
+@token_required
 def buscar_termos():
     termo = request.args.get("termo", "").strip().lower()
     curso_id = request.args.get("curso_id", None)
     query = Termo.query
     if termo:
         query = query.filter(Termo.nome_termo.ilike(f"%{termo}%"))
-    # Se curso_id não for informado, vazio, null, undefined ou zero (string ou int), retorna todos os termos
     if curso_id not in [None, '', 'null', 'undefined', 0, '0', False]:
         try:
             curso_id_int = int(curso_id)
@@ -201,7 +160,8 @@ def buscar_termos():
     ]
     return jsonify(termos_json)
 
-@rotas_principal.route("/admin/buscar_cursos", methods=["GET"])
+@rotas_admin.route("/buscar_cursos", methods=["GET"])
+@token_required
 def buscar_cursos():
     termo = request.args.get("termo", "").strip().lower()
     if termo:
@@ -215,69 +175,3 @@ def buscar_cursos():
         } for c in resultados
     ]
     return jsonify(cursos_json)
-
-# Rota para servir vídeos diretamente (caso queira usar url_for('principal.video', filename=...))
-@rotas_principal.route('/videos/<filename>')
-def video(filename):
-     pasta_videos = os.path.join('APP', 'static', 'videos')
-     return send_from_directory(pasta_videos, filename)
-
-# Página de visualização do termo (detalhe)
-@rotas_principal.route('/vizualizacaoTermo/<int:termo_id>')
-def visualizar_termo(termo_id):
-    termo = Termo.query.get(termo_id)
-    if not termo:
-        flash('Termo não encontrado.', 'warning')
-        return redirect(url_for('principal.pagina_glossario'))
-    curso_nome = termo.curso.nome if getattr(termo, 'curso', None) else None
-    termo_dict = {
-        'id': termo.id,
-        'termo': termo.nome_termo,
-        'descricao': termo.descricao,
-        'video': termo.video,
-        'curso_nome': curso_nome
-    }
-    return render_template('vizualizacaoTermo.html', termo=termo_dict)
-
-# Rotas amigáveis por curso (exemplos solicitados)
-@rotas_principal.route('/cursos/psicologia')
-def termos_psicologia():
-    curso = Curso.query.filter(Curso.nome.ilike('%psicologia%')).first()
-    if not curso:
-        flash('Curso Psicologia não encontrado.', 'warning')
-        return redirect(url_for('principal.pagina_glossario'))
-    # Redireciona para o glossário com filtro por curso
-    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
-
-@rotas_principal.route('/cursos/ciencia-da-computacao')
-def termos_ciencia_da_computacao():
-    # Considera variações com/sem acento
-    curso = (Curso.query
-        .filter(
-            (Curso.nome.ilike('%ciência da computação%')) |
-            (Curso.nome.ilike('%ciencia da computacao%'))
-        )
-        .first()
-    )
-    if not curso:
-        flash('Curso Ciência da Computação não encontrado.', 'warning')
-        return redirect(url_for('principal.pagina_glossario'))
-    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
-
-@rotas_principal.route('/cursos/direito')
-def termos_direito():
-    curso = Curso.query.filter(Curso.nome.ilike('%direito%')).first()
-    if not curso:
-        flash('Curso Direito não encontrado.', 'warning')
-        return redirect(url_for('principal.pagina_glossario'))
-    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
-
-# Opcional: rota genérica por id de curso
-@rotas_principal.route('/cursos/<int:curso_id>')
-def termos_por_curso_id(curso_id):
-    curso = Curso.query.get(curso_id)
-    if not curso:
-        flash('Curso não encontrado.', 'warning')
-        return redirect(url_for('principal.pagina_glossario'))
-    return redirect(url_for('principal.pagina_glossario') + f'?curso_id={curso.id}')
-

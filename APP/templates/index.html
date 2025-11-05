@@ -311,6 +311,13 @@
         </div>
     </div>
 
+    <!-- exemplo: formulário de login direto na página inicial -->
+<form action="{{ url_for('auth.site_login') }}" method="post" autocomplete="off">
+  <input type="text" name="username" placeholder="Usuário" required>
+  <input type="password" name="password" placeholder="Senha" required>
+  <button type="submit">Entrar</button>
+</form>
+
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/acessibilidade.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modal-contact.js') }}"></script>

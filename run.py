@@ -1,19 +1,6 @@
-from APP import criar_aplicacao
-from APP.extencoes import db
-import os
+from APP import create_app
 
-app = criar_aplicacao()
+app = create_app()
 
-# Inicializar banco na primeira execução
-with app.app_context():
-    try:
-        # Tentar criar as tabelas se não existirem
-        db.create_all()
-        print("✅ Tabelas do banco criadas/verificadas")
-    except Exception as e:
-        print(f"⚠️  Erro ao inicializar banco: {e}")
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    debug = os.environ.get("FLASK_ENV") == "development"
-    app.run(debug=debug, host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
