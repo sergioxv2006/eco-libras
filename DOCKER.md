@@ -10,6 +10,8 @@
 ### 1. Buildar e iniciar a aplicação
 
 ```powershell
+# Caminho corrteo para rodar o container
+cd eco-libras
 # Buildar a imagem e iniciar os containers
 docker-compose up --build
 ```

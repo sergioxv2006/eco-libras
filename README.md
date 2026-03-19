@@ -22,31 +22,32 @@ Acesse: `http://localhost:5000`
 ### Opção 2: Instalação Local (Windows / PowerShell)
 
 Pré-requisitos:
+
 - Python 3.11+ instalado (recomendado)
 - Git (opcional)
 
-1) Clonar o repositório e entrar na pasta do projeto
+1. Clonar o repositório e entrar na pasta do projeto
 
 ```powershell
 git clone https://github.com/sergioxv2006/eco-libras.git
 cd eco-libras
 ```
 
-2) Criar e ativar um ambiente virtual
+2. Criar e ativar um ambiente virtual
 
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-3) Instalar dependências
+3. Instalar dependências
 
 ```powershell
 python -m pip install -U pip
 pip install -r requirements.txt
 ```
 
-4) Configurar variáveis de ambiente
+4. Configurar variáveis de ambiente
 
 ```powershell
 Copy-Item .env.example .env
@@ -55,10 +56,10 @@ Copy-Item .env.example .env
 
 Por padrão, o projeto usa SQLite em `instance/data_bank.db`. A pasta `instance/` já existe no repo.
 
-5) Iniciar a aplicação
+5. Iniciar a aplicação
 
 ```powershell
-python run.py
+python -m APP.run
 ```
 
 Abra http://localhost:5000 no navegador. Área admin em http://localhost:5000/admin (credenciais no `.env`). Na primeira execução, as tabelas são criadas automaticamente.
@@ -66,12 +67,14 @@ Abra http://localhost:5000 no navegador. Área admin em http://localhost:5000/ad
 ## Características do Projeto
 
 ### Design
+
 - **Paleta de cores**: Azul (#007bff) e branco (#ffffff)
 - **Estilo**: Minimalista e limpo
 - **Responsivo**: Adaptável a diferentes dispositivos
 - **Tipografia**: Arial, fonte legível e escalável
 
 ### Acessibilidade
+
 - **WCAG 2.1 Nível AA**: Conformidade com diretrizes internacionais
 - **Navegação por teclado**: Totalmente navegável via teclado
 - **Leitores de tela**: Compatível com NVDA, JAWS e VoiceOver
@@ -81,6 +84,7 @@ Abra http://localhost:5000 no navegador. Área admin em http://localhost:5000/ad
 - **Atributos ARIA**: Labels e roles apropriados
 
 ### Funcionalidades
+
 - **Navegação suave**: Scroll suave entre seções
 - **Formulário de contato**: Com validação acessível
 - **Barra de ferramentas de acessibilidade**: Controles rápidos
@@ -110,6 +114,7 @@ libras_course_website/
 ## Recursos de Acessibilidade Implementados
 
 ### 1. Navegação por Teclado
+
 - **Tab**: Navegar para o próximo elemento
 - **Shift + Tab**: Navegar para o elemento anterior
 - **Enter/Space**: Ativar links e botões
@@ -120,6 +125,7 @@ libras_course_website/
 - **Alt + 4**: Ir para o rodapé
 
 ### 2. Ferramentas de Acessibilidade
+
 - **A+**: Aumentar tamanho da fonte
 - **A-**: Diminuir tamanho da fonte
 - **A**: Resetar tamanho da fonte
@@ -127,6 +133,7 @@ libras_course_website/
 - **🔊**: Ativar/desativar modo leitor de tela
 
 ### 3. Compatibilidade com Leitores de Tela
+
 - Estrutura semântica HTML5
 - Atributos ARIA apropriados
 - Descrições alternativas para imagens
@@ -134,6 +141,7 @@ libras_course_website/
 - Labels associados aos campos de formulário
 
 ### 4. Design Responsivo
+
 - Layout flexível
 - Suporte a zoom até 200%
 - Compatível com dispositivos móveis
@@ -142,16 +150,19 @@ libras_course_website/
 ## Conformidade com Padrões
 
 ### WCAG 2.1 Nível AA
+
 - **Perceptível**: Contraste adequado, texto alternativo
 - **Operável**: Navegação por teclado, sem convulsões
 - **Compreensível**: Linguagem clara, comportamento previsível
 - **Robusto**: Compatível com tecnologias assistivas
 
 ### Lei Brasileira de Inclusão
+
 - Conformidade com a Lei nº 13.146/2015
 - Acessibilidade digital garantida
 
 ### eMAG
+
 - Seguimento do Modelo de Acessibilidade em Governo Eletrônico
 
 ## Como Usar
@@ -171,12 +182,12 @@ libras_course_website/
 ## Suporte
 
 Para questões de acessibilidade ou suporte técnico:
+
 - Email: acessibilidade@cursodlibras.com.br
-- Telefone: (11) 99999-9999
+- Telefone: (91) 98977-4760
 - WhatsApp: Disponível através do link no site
 
 ## Licença
 
-© 2025 Curso de Libras. Todos os direitos reservados.
+© 2026 Curso de Libras. Todos os direitos reservados.
 Comprometidos com a acessibilidade e inclusão digital.
-

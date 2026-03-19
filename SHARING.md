@@ -6,7 +6,7 @@ Este guia explica como compartilhar o projeto e o banco de dados com outros dese
 
 ### Opção 1: Via GitHub (Recomendado)
 
-#### Para o desenvolvedor original (você):
+#### Para o desenvolvedor original:
 
 ```powershell
 # 1. Adicionar arquivos Docker ao Git
@@ -17,7 +17,7 @@ git add instance/data_bank.db
 
 # 3. Commit e push
 git commit -m "Adicionar configuração Docker e banco de dados"
-git push origin branch-paulo
+git push origin main
 ```
 
 #### Para outros desenvolvedores:
@@ -131,11 +131,9 @@ git pull
 ### 🔴 NÃO faça isso em PRODUÇÃO:
 - Nunca versione banco de dados com dados reais de usuários no Git
 - Use variáveis de ambiente para credenciais sensíveis
-- Considere usar PostgreSQL/MySQL em produção
 
 ### ✅ Boas práticas para desenvolvimento:
 - Use um banco "seed" (dados de exemplo) para compartilhar
-- Documente estrutura de tabelas no README
 - Use migrations (Flask-Migrate) para sincronizar schemas
 
 ---

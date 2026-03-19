@@ -1,17 +1,19 @@
-version: '3.8'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: eco-libras-app
     ports:
       - "5000:5000"
     volumes:
       # Mapeia o diretório instance para persistir o banco de dados
-      - ./instance:/app/instance
+      - ./APP/instance:/app/instance
       # Mapeia o código para desenvolvimento (hot reload)
       - ./APP:/app/APP
-      - ./run.py:/app/run.py
+    env_file:
+      - ./APP/.env
     environment:
       - FLASK_ENV=development
       - FLASK_APP=run.py

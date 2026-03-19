@@ -5,13 +5,13 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Copiar requirements primeiro (cache de layers)
-COPY requirements.txt .
+COPY APP/requirements.txt .
 
 # Instalar dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar todo o código da aplicação
-COPY . .
+COPY APP/ ./APP/
 
 # Criar diretório instance se não existir
 RUN mkdir -p /app/instance
@@ -25,4 +25,4 @@ ENV FLASK_ENV=development
 ENV PYTHONUNBUFFERED=1
 
 # Comando para rodar a aplicação
-CMD ["python", "run.py"]
+CMD ["python", "-m", "APP.run"]

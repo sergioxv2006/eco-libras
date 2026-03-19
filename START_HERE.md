@@ -1,5 +1,3 @@
-# 🚀 START AQUI - Para novos desenvolvedores
-
 ## Olá! Bem-vindo ao projeto Eco Libras 👋
 
 Este é um guia super rápido para você começar a trabalhar no projeto.
@@ -17,12 +15,18 @@ Este é um guia super rápido para você começar a trabalhar no projeto.
 ```powershell
 # 1. Clonar o projeto
 git clone https://github.com/sergioxv2006/eco-libras.git
-cd eco-libras
+cd C:\Users\seu_nome_de_usuário\eco-libras
 
-# 2. Rodar o projeto
+# 2. Para e remove containers e redes, e limpa tudo o que foi criado
+docker-compose down
+
+# 3. Força o Docker a reconstruir todas as imagens do seu projeto do zero
+docker compose build --no-cache
+
+# 4. Reconstrói o que mudou e depois sobe os containers
 docker-compose up --build
 
-# 3. Abrir no navegador
+# 5. Abrir no navegador
 # http://localhost:5000
 ```
 
@@ -41,7 +45,7 @@ docker-compose up --build
 ```powershell
 # 1. Clonar o projeto
 git clone https://github.com/sergioxv2006/eco-libras.git
-cd eco-libras
+cd C:\Users\seu_nome_de_usuário\eco-libras
 
 # 2. Criar ambiente virtual
 py -3.11 -m venv .venv
@@ -51,7 +55,7 @@ py -3.11 -m venv .venv
 pip install -r requirements.txt
 
 # 4. Rodar o projeto
-python run.py
+python -m APP.run (fora da pasta APP)
 
 # 5. Abrir no navegador
 # http://localhost:5000
@@ -79,8 +83,8 @@ eco-libras/
 ## 🔑 Acesso Admin
 
 - **URL**: http://localhost:5000/admin
-- **Usuário**: (verifique o arquivo `.env` ou pergunte ao time)
-- **Senha**: (verifique o arquivo `.env` ou pergunte ao time)
+- **Usuário**: (verifique o arquivo `.env`)
+- **Senha**: (verifique o arquivo `.env`)
 
 ---
 
@@ -133,7 +137,7 @@ ports:
 Test-Path instance\data_bank.db
 
 # Se não existir, pergunte ao time ou faça pull do Git
-git pull origin branch-paulo
+git pull origin main
 ```
 
 ### "Mudanças no código não aparecem"
@@ -150,7 +154,7 @@ python run.py
 ## 📚 Documentação Completa
 
 - **Docker detalhado**: `DOCKER.md`
-- **Compartilhamento**: `COMPARTILHAMENTO.md`
+- **Compartilhamento**: `SHARING.md`
 - **README principal**: `README.md`
 
 ---
